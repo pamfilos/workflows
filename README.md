@@ -1,4 +1,8 @@
+[![codecov](https://codecov.io/gh/cern-sis/workflows/branch/main/graph/badge.svg?token=00LZLXO5OD)](https://codecov.io/gh/cern-sis/workflows)
+
 # workflows
+
+
 
 ## Run with docker-compose
 
