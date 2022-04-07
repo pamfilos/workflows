@@ -24,9 +24,8 @@ jobs:
       - name: Re-create unit test sqlite database
         run: airflow db reset -y
       - name: Run tests with pytest and generate report
-        run: coverage run -m pytest
+        run: pytest --cov=./ --cov-report=xml
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
-          fail_ci_if_error: true
           verbose: true
