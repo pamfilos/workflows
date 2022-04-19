@@ -1,1 +1,11 @@
 pre-commit==2.17.0
+apache-airflow==2.2.4 --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.2.4/constraints-3.8.txt
+apache_airflow_providers_ftp==2.1.2
+boto3==1.21.39
+botocore==1.24.39
+busypie==0.4.5
+dags==0.2.1
+mypy_boto3_s3==1.21.34
+pysftp==0.2.9
+pytest==7.1.0
+PyYAML==6.0
