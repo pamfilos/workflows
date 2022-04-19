@@ -36,7 +36,7 @@ export AIRFLOW_HOME=/path/to/cloned/repo
 ```
 
 4. Install all required dependencies for a project. We need 3 requirements files, when we're running the project locally. First file (requirements.py) has all additional dependencies required to run the tasks correctly (connecting to ftputil, boto3 and etc.), the second one installs requirememnts for testing, such as pytest, the third- (requirements_airflow.py) installs Airflow itself and constraints needed for it. The the third file is not needed when we're running the procject on Docker, because we're using Apache Airflow Docker image:
-   `pip install requirements.txt -r requirements-test.txt -r requirements-airflow.txt`
+   `pip install -r requirements.txt -r requirements-test.txt -r requirements-airflow.txt`
 5. Run Airflow. Airflow comes with the `standalone` command. This should not be used as it seems to use the SequentialExecutor by default. To have our local config being use, we must run all services together :
 
 ```
