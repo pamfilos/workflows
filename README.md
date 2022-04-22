@@ -2,8 +2,6 @@
 
 # workflows
 
-
-
 ## Run with docker-compose
 
 The easiest way to run the project is run in with docker compose.

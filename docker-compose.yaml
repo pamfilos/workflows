@@ -97,17 +97,42 @@ services:
       timeout: 30s
       retries: 50
     restart: always
-  
+
   sftp:
     image: atmoz/sftp
-    expose: 
-      - 22
+    expose:
+      - 2222
     ports:
-      - 22:2222
+      - "2222:22"
     volumes:
       - ./data:/home/airflow/upload
     command: airflow:airflow:::upload
     restart: always
+
+  s3:
+    image: minio/minio
+    expose:
+      - 9000
+      - 9001
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - MINIO_ROOT_USER=airflow
+      - MINIO_ROOT_PASSWORD=Airflow01
+    command: server /data --console-address ":9001"
+
+  create_buckets:
+    image: minio/mc
+    depends_on:
+      - s3
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc alias set airflow http://s3:9000 airflow Airflow01;
+      /usr/bin/mc mb airflow/springer;
+      exit 0;
+      "
 
   airflow-webserver:
     <<: *airflow-common

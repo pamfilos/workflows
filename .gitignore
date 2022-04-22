@@ -1,3 +1,11 @@
+# Local Dev
+*.log
+*.err
+*.pid
+*.out
+.DS_Store
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -134,7 +142,6 @@ dmypy.json
 # airflow
 .env
 .python-version
-airflow.cfg
 airflow.db
 standalone_admin_password.txt
 webserver_config.py
