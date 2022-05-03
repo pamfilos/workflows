@@ -6,7 +6,6 @@ ENV AIRFLOW_UID=501
 COPY requirements.txt ./requirements.txt
 COPY requirements-test.txt ./requirements-test.txt
 COPY dags ./dags
-COPY plugins ./plugins
 
 USER airflow
 RUN pip install --no-cache-dir --user -r requirements.txt -r requirements-test.txt
