@@ -15,6 +15,9 @@ def convert_html_subsripts_to_latex(input):
     return input
 
 
+def clean_collaboration(input):
+    return clean_whitespace_characters(input.replace("for the", ""))
+
 def remove_specific_tags(value, tags=None, attributes=None):
     tags = tags or []
     attributes = attributes or []
