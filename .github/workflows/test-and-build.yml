@@ -66,4 +66,4 @@ jobs:
         with:
           registry: registry.cern.ch
           push: true
-          tags: registry.cern.ch/cern-sis/worfklows:latest,registry.cern.ch/cern-sis/workflows:${{ github.sha }}
+          tags: registry.cern.ch/cern-sis/workflows:latest,registry.cern.ch/cern-sis/workflows:${{ github.sha }}
