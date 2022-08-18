@@ -51,10 +51,10 @@ def test_set_APS_harvesting_interval(repo=MockedRepo()):
 def test_save_file_in_s3():
     today = date.today()
     repo = MockedRepo()
-    exptected_key = f'{today}/{ datetime.now().strftime("%Y-%m-%dT%H:%M")}.json'
+    expected_key = f'{today}/{ datetime.now().strftime("%Y-%m-%dT%H:%M")}.json'
     data = str.encode('{"data": ["abstracts": "abstract value"]}')
     key = save_file_in_s3(data, repo)
-    assert key == exptected_key
+    assert key == expected_key
 
 
 def test_split_json():
