@@ -1,7 +1,9 @@
 import xml.etree.ElementTree as ET
 
+from common.constants import ARXIV_EXTRACTION_PATTERN
 from common.parsing.parser import IParser
 from common.parsing.xml_extractors import CustomExtractor
+from idutils import is_arxiv
 from structlog import get_logger
 
 
@@ -32,6 +34,10 @@ class IOPParser(IParser):
             CustomExtractor(
                 destination="related_article_doi",
                 extraction_function=self._get_related_article_doi,
+            ),
+            CustomExtractor(
+                destination="arxiv_eprints",
+                extraction_function=self._get_extracted_arxiv_eprint_value,
             ),
         ]
         super().__init__(extractors)
@@ -75,3 +81,15 @@ class IOPParser(IParser):
         except AttributeError:
             self.logger.error("No related article dois found", dois=self.dois)
             return
+
+    def _get_extracted_arxiv_eprint_value(self, article):
+        arxivs_value = article.find(
+            "front/article-meta/custom-meta-group/custom-meta/meta-value"
+        )
+        try:
+            arxiv_value = ARXIV_EXTRACTION_PATTERN.sub("", arxivs_value.text.lower())
+            if is_arxiv(arxiv_value):
+                return [{"value": arxiv_value}]
+            self.logger.error("The arXiv value is not valid.", dois=self.dois)
+        except AttributeError:
+            self.logger.error("No arXiv eprints found", dois=self.dois)
