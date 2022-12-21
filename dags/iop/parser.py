@@ -46,6 +46,11 @@ class IOPParser(IParser):
                 attribute="count",
                 extra_function=lambda x: [parse_to_int(x)] if parse_to_int(x) else None,
             ),
+            CustomExtractor(
+                destination="authors",
+                extraction_function=self._extract_authors,
+                required=True,
+            ),
         ]
         super().__init__(extractors)
 
@@ -100,3 +105,81 @@ class IOPParser(IParser):
             self.logger.error("The arXiv value is not valid.", dois=self.dois)
         except AttributeError:
             self.logger.error("No arXiv eprints found", dois=self.dois)
+
+    def _extract_authors(self, article):
+        contrib_types = article.findall(
+            "front/article-meta/contrib-group/contrib[@contrib-type='author']"
+        )
+        authors = []
+        surname = ""
+        given_names = ""
+
+        for contrib_type in contrib_types:
+            surname = self._extract_surname(contrib_type)
+            given_names = self._extract_given_names(contrib_type)
+            reffered_ids = contrib_type.findall("xref[@ref-type='aff']")
+            affiliations = [
+                self._get_affiliation_value(article, reffered_id)
+                for reffered_id in reffered_ids
+                if self._get_affiliation_value(article, reffered_id)
+            ]
+            author = {}
+            if surname:
+                author["surname"] = surname
+            if given_names:
+                author["given_names"] = given_names
+            if affiliations:
+                author["affiliations"] = affiliations
+            if author:
+                authors.append(author)
+        return authors
+
+    def _extract_surname(self, contrib_type):
+        try:
+            return contrib_type.find("name/surname").text
+        except AttributeError:
+            self.logger.error("Surname is not found in XML", dois=self.dois)
+
+    def _extract_given_names(self, contrib_type):
+        try:
+            given_names = contrib_type.find("name/given-names").text
+            # IOP puts the collaboration in authors as 'author' with the given_name,
+            # which value actually is calloboration name
+            if "collaboration" not in given_names.lower():
+                return given_names
+        except AttributeError:
+            self.logger.error("Given_names is not found in XML", dois=self.dois)
+
+    def _get_affiliation_value(self, article, reffered_id):
+        institution_and_country = {}
+        try:
+            id = reffered_id.get("rid")
+        except AttributeError:
+            self.logger.error("Referred id is not found")
+        institution = self._get_institution(article, id)
+        country = self._get_country(article, id)
+        if country:
+            institution_and_country["country"] = country
+        if institution and country:
+            institution_and_country["institution"] = ", ".join([institution, country])
+        return institution_and_country
+
+    def _get_institution(self, article, id):
+        try:
+            institution = article.find(
+                f"front/article-meta/contrib-group/aff[@id='{id}']/institution"
+            ).text
+            return institution
+        except AttributeError:
+            self.logger.error("Institution is not found in XML")
+            return
+
+    def _get_country(self, article, id):
+        try:
+            country = article.find(
+                f"front/article-meta/contrib-group/aff[@id='{id}']/country"
+            ).text
+            return country
+        except AttributeError:
+            self.logger.error("Country is not found in XML")
+            return
