@@ -11,8 +11,21 @@ env:
   AIRFLOW_HOME: /home/runner/work/workflows/workflows
 
 jobs:
+  Build:
+    uses: cern-sis/gh-workflows/.github/workflows/build-image.yml@main
+    with:
+      registry: registry.cern.ch
+      tags: registry.cern.ch/cern-sis/workflows:${{ github.sha }}
+      push: true
+    secrets:
+      registry_username: ${{ secrets.HARBOR_USERNAME }}
+      registry_password: ${{ secrets.HARBOR_PASSWORD }}
+
   Test:
+    needs: [Build]
     runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: registry.cern.ch/cern-sis/workflows:${{ github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,6 +41,7 @@ jobs:
           pip install --no-cache-dir --upgrade setuptools
           pip install --no-cache-dir --upgrade wheel
           pip install -r requirements-airflow.txt -r requirements.txt -r requirements-test.txt
+
       - name: Create S3 Buckets
         run: make buckets
 
@@ -35,26 +49,20 @@ jobs:
         run: make start
 
       - name: Run tests with pytest and generate report
-        run: pytest --cov=./ --cov-report=xml
+        run: |
+          docker run --network=host -v "$(pwd)"/tests:/opt/airflow/tests -v "$(pwd)"/data:/opt/airflow/data -v "$(pwd)"/airflow.cfg:/opt/airflow/airflow.cfg --name workflows --entrypoint pytest $DOCKER_IMAGE --cov=./ --cov-report=xml
+
+      - name: Copy test coverage file to host machine
+        run: |
+          docker cp workflows:/opt/airflow/coverage.xml .
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           verbose: true
 
-  Build:
-    needs: [Test]
-    uses: cern-sis/gh-workflows/.github/workflows/build-image.yml@main
-    with:
-      registry: registry.cern.ch
-      tags: registry.cern.ch/cern-sis/workflows:latest,registry.cern.ch/cern-sis/workflows:${{ github.sha }}
-      push: true
-    secrets:
-      registry_username: ${{ secrets.HARBOR_USERNAME }}
-      registry_password: ${{ secrets.HARBOR_PASSWORD }}
-
   Deploy:
-    needs: [Build]
+    needs: [Test]
     uses: cern-sis/gh-workflows/.github/workflows/deploy-qa.yml@main
     with:
       project: scoap3
