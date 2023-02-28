@@ -39,7 +39,7 @@ jobs:
         run: make start
 
       - name: Build Image
-        uses: cern-sis/gh-workflows/.github/actions/build-docker@main
+        uses: cern-sis/gh-workflows/.github/actions/build-docker@v1.0.0
         with:
           context: .
           tags: registry.cern.ch/cern-sis/workflows:${{ github.sha }}
@@ -72,7 +72,7 @@ jobs:
 
   Deploy:
     needs: [build_test]
-    uses: cern-sis/gh-workflows/.github/workflows/deploy-qa.yml@main
+    uses: cern-sis/gh-workflows/.github/workflows/deploy-qa.yml@v1.0.0
     with:
       project: scoap3
       application: scoap3-workflows
