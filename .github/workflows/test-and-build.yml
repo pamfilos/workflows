@@ -70,10 +70,9 @@ jobs:
         run: |
           docker push $DOCKER_IMAGE
 
-  Deploy:
-    needs: [build_test]
-    uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-update@v5.5.0
-    with:
-      event-type: update
-      images: registry.cern.ch/cern-sis/workflows:${{ github.sha }}
-      token: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES }}
+      - name: Deploy QA
+        uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-update@v5.5.0
+        with:
+          event-type: update
+          images: registry.cern.ch/cern-sis/workflows:${{ github.sha }}
+          token: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES }}
