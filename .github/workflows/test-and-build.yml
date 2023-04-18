@@ -39,44 +39,37 @@ jobs:
         run: make start
 
       - name: Build Image
-        uses: cern-sis/gh-workflows/.github/actions/build-docker@v1.0.0
+        uses: cern-sis/gh-workflows/.github/actions/docker-build@v4.0.0
         with:
-          context: .
-          tags: registry.cern.ch/cern-sis/workflows:${{ github.sha }}
+          registry: registry.cern.ch
+          image: cern-sis/workflows
+          cache: false
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
 
       - name: Run tests with pytest and generate report
-        run: |
-          docker run --network=host -v "$(pwd)"/tests:/opt/airflow/tests -v "$(pwd)"/data:/opt/airflow/data -v "$(pwd)"/airflow.cfg:/opt/airflow/airflow.cfg --name workflows --entrypoint pytest $DOCKER_IMAGE --cov=./ --cov-report=xml
+        run: >
+          docker run
+          --network=host
+          -v "$(pwd)"/tests:/opt/airflow/tests
+          -v "$(pwd)"/data:/opt/airflow/data
+          -v "$(pwd)"/airflow.cfg:/opt/airflow/airflow.cfg
+          --name workflows
+          --entrypoint pytest
+          $DOCKER_IMAGE
+          --cov=./ --cov-report=xml
 
       - name: Copy test coverage file to host machine
-        run: |
-          docker cp workflows:/opt/airflow/coverage.xml .
+        run: docker cp workflows:/opt/airflow/coverage.xml .
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           verbose: true
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        if: ${{ github.event_name == 'push' }}
+      - name: Deploy QA
+        uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-update@v5.5.0
         with:
-          registry: registry.cern.ch
-          username: ${{ secrets.HARBOR_USERNAME }}
-          password: ${{ secrets.HARBOR_PASSWORD }}
-
-      - name: Push
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          docker push $DOCKER_IMAGE
-
-  Deploy:
-    needs: [build_test]
-    uses: cern-sis/gh-workflows/.github/workflows/deploy-qa.yml@v1.0.0
-    with:
-      project: scoap3
-      application: scoap3-workflows
-      namespace: scoap3-qa
-      image: registry.cern.ch/cern-sis/workflows
-    secrets:
-      PAT: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES }}
+          event-type: update
+          images: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
+          token: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES }}
