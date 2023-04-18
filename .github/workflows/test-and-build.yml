@@ -39,7 +39,7 @@ jobs:
         run: make start
 
       - name: Build Image
-        uses: cern-sis/gh-workflows/.github/actions/docker-build@v4.0.0
+        uses: cern-sis/gh-workflows/.github/actions/docker-build@v5.5.0
         with:
           registry: registry.cern.ch
           image: cern-sis/workflows
