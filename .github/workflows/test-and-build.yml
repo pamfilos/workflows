@@ -71,7 +71,7 @@ jobs:
           docker push $DOCKER_IMAGE
 
       - name: Deploy QA
-        uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-update@v5.5.0
+        uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-new-images@v5.5.0
         with:
           event-type: update
           images: registry.cern.ch/cern-sis/workflows:${{ github.sha }}
