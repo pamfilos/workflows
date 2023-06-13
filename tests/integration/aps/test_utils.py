@@ -53,6 +53,7 @@ class TestClassAPSFilesHarvesting:
         save_file_in_s3(articles_metadata, repo)
         assert len(repo.find_all()) == 1
 
+    @pytest.mark.xfail(reason="This should be decorated with vcr.")
     def test_dag_run(self, dag: DAG, dag_was_paused: bool):
         repo = APSRepository()
         repo.delete_all()
