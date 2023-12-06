@@ -12,21 +12,21 @@
           "name": "Shu-Hao Wu",
           "firstname": "Shu-Hao",
           "surname": "Wu",
-          "affiliationIds": ["a1"]
+          "affiliationIds": ["a1", "a1"]
         },
         {
           "type": "Person",
           "name": "Ethan Turner",
           "firstname": "Ethan",
           "surname": "Turner",
-          "affiliationIds": ["a1"]
+          "affiliationIds": ["a1", "a1"]
         },
         {
           "type": "Person",
           "name": "Hailin Wang",
           "firstname": "Hailin",
           "surname": "Wang",
-          "affiliationIds": ["a1"]
+          "affiliationIds": ["a1", "a1"]
         }
       ],
       "affiliations": [

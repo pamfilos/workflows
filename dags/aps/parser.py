@@ -87,7 +87,7 @@ class APSParser(IParser):
                 "given_names": author["firstname"],
                 "surname": author["surname"],
                 "affiliations": self._get_affiliations(
-                    article, author["affiliationIds"]
+                    article, set(author["affiliationIds"])
                 )
                 if "affiliationIds" in author
                 else [],
