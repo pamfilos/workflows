@@ -50,6 +50,13 @@ def test_dag_loaded(dag):
     assert len(dag.tasks) == 5
 
 
+def test_affiliation_countries_in_enriched(article):
+    authors = article.get("authors", [])
+    for author in authors:
+        for aff in author.get("affiliations"):
+            assert aff.get("country") is not None
+
+
 publisher = "IOP"
 
 generic_pseudo_parser_output = {

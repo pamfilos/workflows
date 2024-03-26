@@ -179,11 +179,12 @@ class OUPParser(IParser):
                         "institution",
                     )
                 )
+                _aff = {"institution": institution}
                 if country:
                     country = country.capitalize()
-                full_affiliation.append(
-                    {"institution": institution, "country": country}
-                )
+                    _aff["country"] = country
+                
+                full_affiliation.append(_aff)
 
             if not all([surname, given_names, email]) and not full_affiliation:
                 pass

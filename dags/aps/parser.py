@@ -106,7 +106,6 @@ class APSParser(IParser):
             {
                 "value": affiliation["name"],
                 "organization": (",").join(affiliation["name"].split(",")[:-1]),
-                "country": parse_country_from_value(affiliation["name"]),
             }
             for affiliation in article["affiliations"]
             if affiliation["id"] in affiliationIds

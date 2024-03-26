@@ -2,6 +2,7 @@ import datetime
 import re
 
 from common.constants import FN_REGEX
+from common.utils import parse_country_from_value
 
 
 class Enhancer:
@@ -43,17 +44,26 @@ class Enhancer:
             }
         ]
 
-    def __remove_country(self, item):
+    def __construct_authors(self, item):
+        # add_nations(item)
         pattern_for_cern_cooperation_agreement = re.compile(
-            r"cooperation agreement with cern", re.IGNORECASE
+            r'cooperation agreement with cern', re.IGNORECASE
         )
         for author in item.get("authors", []):
             for affiliation in author.get("affiliations", []):
+                # Remove country, on special string 'cooperation agreement with cern'
                 match_pattern = pattern_for_cern_cooperation_agreement.search(
                     affiliation.get("value", "")
                 )
                 if match_pattern:
                     affiliation.pop("country", None)
+                    continue
+
+                if not affiliation.get("country"):
+                    affiliation["country"] = parse_country_from_value(affiliation.get("value"))
+
+        return item
+
 
     def __call__(self, publisher, item):
         creation_date = datetime.datetime.now().isoformat()
@@ -64,5 +74,5 @@ class Enhancer:
         self.__construct_imprints(item_copy, publisher)
         self.__construct_record_creation_date(item_copy, creation_date)
         self.__construct_titles(item_copy, publisher)
-        self.__remove_country(item)
+        self.__construct_authors(item_copy)
         return item_copy

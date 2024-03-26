@@ -21,7 +21,7 @@ from common.constants import (
     CREATIVE_COMMONS_PATTERN,
     LICENSE_PATTERN,
 )
-from common.countries_mapping import COUNTRIES_DEFAULT_MAPPING
+from common.constants import COUNTRIES_DEFAULT_MAPPING
 from common.exceptions import (
     FoundMoreThanOneMatchOrNone,
     UnknownFileExtension,

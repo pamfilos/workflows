@@ -1,6 +1,7 @@
 from common.utils import parse_without_names_spaces
 from elsevier.parser import ElsevierParser
 from pytest import fixture, mark, param
+from common.enhancer import Enhancer
 
 
 @fixture(scope="module")
@@ -26,6 +27,10 @@ def articles(shared_datadir):
 @fixture()
 def parsed_articles(parser, articles):
     return [parser._publisher_specific_parsing(article) for article in articles]
+
+@fixture()
+def enhanced_articles(parser, parsed_articles):
+    return [Enhancer()("Elsevier", parser._publisher_specific_parsing(article)) for article in parsed_articles]
 
 
 @mark.parametrize(
@@ -252,7 +257,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -273,7 +278,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -404,7 +409,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -898,7 +903,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -1018,7 +1023,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1028,7 +1033,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1076,7 +1081,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1284,7 +1289,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1365,7 +1370,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1408,7 +1413,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1467,7 +1472,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1570,7 +1575,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -1826,7 +1831,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -2665,7 +2670,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             },
                             {
                                 "value": "Centro de Aplicaciones Tecnológicas y Desarrollo Nuclear (CEADEN), Havana, Cuba",
@@ -2740,7 +2745,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -2981,7 +2986,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -3090,7 +3095,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -3177,7 +3182,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -3253,7 +3258,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -3318,7 +3323,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -3751,7 +3756,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -3761,7 +3766,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             },
                             {
                                 "value": "A.I. Alikhanyan National Science Laboratory (Yerevan Physics Institute) Foundation, Yerevan, Armenia",
@@ -4414,7 +4419,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4457,7 +4462,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4511,7 +4516,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4521,7 +4526,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4821,7 +4826,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4853,7 +4858,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4863,7 +4868,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4884,7 +4889,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4905,7 +4910,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -4992,7 +4997,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5002,7 +5007,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5188,7 +5193,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5330,7 +5335,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -5340,7 +5345,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5350,7 +5355,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5437,7 +5442,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5562,7 +5567,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5682,7 +5687,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5692,7 +5697,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -5872,7 +5877,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -6118,7 +6123,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -6243,7 +6248,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -6286,7 +6291,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -6329,7 +6334,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -6339,7 +6344,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -6387,7 +6392,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -6710,7 +6715,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -6829,11 +6834,11 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             },
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             },
                         ],
                     },
@@ -6953,7 +6958,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7260,7 +7265,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7292,7 +7297,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7302,7 +7307,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7312,7 +7317,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7344,7 +7349,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -7387,7 +7392,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7430,7 +7435,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7736,7 +7741,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7768,7 +7773,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -7789,7 +7794,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -8012,7 +8017,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -8077,7 +8082,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -8361,7 +8366,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -8371,7 +8376,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -8469,7 +8474,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -8479,7 +8484,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -8681,7 +8686,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -8724,7 +8729,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -8734,7 +8739,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -8799,7 +8804,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -9281,7 +9286,7 @@ def parsed_articles(parser, articles):
                             },
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             },
                         ],
                     },
@@ -9313,7 +9318,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -9356,7 +9361,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -9399,7 +9404,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -9530,7 +9535,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -9551,7 +9556,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -10039,7 +10044,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -10334,7 +10339,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -10388,7 +10393,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -10754,7 +10759,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -10775,7 +10780,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -10884,7 +10889,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -10916,7 +10921,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an international laboratory covered by a cooperation agreement with CERN",
-                                "country": "CERN"
+                                # "country": "CERN"
                             }
                         ],
                     },
@@ -10948,7 +10953,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -11002,7 +11007,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -11424,7 +11429,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -11445,7 +11450,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -11455,7 +11460,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -11520,7 +11525,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -11541,7 +11546,7 @@ def parsed_articles(parser, articles):
                         "affiliations": [
                             {
                                 "value": "Affiliated with an institute covered by a cooperation agreement with CERN",
-                                "country": "CERN",
+                                # "country": "CERN",
                             }
                         ],
                     },
@@ -11692,3 +11697,14 @@ def parsed_articles(parser, articles):
 def test_elsevier_parsing(parsed_articles, expected, key):
     for (expected_value, article) in zip(expected, parsed_articles):
         assert article[key] == expected_value
+
+        SKIP_ENHANCE_FOR = [
+            "abstract",
+            "title",
+            "copyright_holder",
+            "copyright_year",
+            "copyright_statement",
+        ]
+
+        if key not in SKIP_ENHANCE_FOR:
+            assert Enhancer()("Elsevier", article)[key] == expected_value

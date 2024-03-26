@@ -121,7 +121,6 @@ class HindawiParser(IParser):
             {
                 "value": affiliation.text,
                 "organization": ORGANIZATION_PARSING_PATTERN.sub("", affiliation.text),
-                "country": parse_country_from_value(affiliation.text),
             }
             for affiliation in affiliations
         ]

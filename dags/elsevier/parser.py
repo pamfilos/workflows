@@ -203,7 +203,6 @@ class ElsevierParser(IParser):
                 affiliations.append(
                     {
                         "value": affiliation_value,
-                        "country": parse_country_from_value(affiliation_value),
                     }
                 )
 
