@@ -183,7 +183,6 @@ class ElsevierParser(IParser):
             field_name="country",
             dois=self.dois,
         )
-        country = country and parse_country_from_value(country)
         if affiliation_value and organization and country:
             affiliations.append(
                 {
@@ -203,7 +202,6 @@ class ElsevierParser(IParser):
                 affiliations.append(
                     {
                         "value": affiliation_value,
-                        "country": parse_country_from_value(affiliation_value),
                     }
                 )
 

@@ -63,7 +63,7 @@ def parsed_articles(parser, articles):
                             {
                                 "value": "Department of Physics, University of Oregon, Eugene, Oregon 97403, USA",
                                 "organization": "Department of Physics, University of Oregon, Eugene, Oregon 97403",
-                                "country": "USA",
+                                # "country": "USA",
                             }
                         ],
                     },
@@ -75,7 +75,7 @@ def parsed_articles(parser, articles):
                             {
                                 "value": "Department of Physics, University of Oregon, Eugene, Oregon 97403, USA",
                                 "organization": "Department of Physics, University of Oregon, Eugene, Oregon 97403",
-                                "country": "USA",
+                                # "country": "USA",
                             }
                         ],
                     },
@@ -87,7 +87,7 @@ def parsed_articles(parser, articles):
                             {
                                 "value": "Department of Physics, University of Oregon, Eugene, Oregon 97403, USA",
                                 "organization": "Department of Physics, University of Oregon, Eugene, Oregon 97403",
-                                "country": "USA",
+                                # "country": "USA",
                             }
                         ],
                     },
@@ -101,7 +101,7 @@ def parsed_articles(parser, articles):
                             {
                                 "value": "Department of Physics, University of Toronto, Toronto, Ontario, Canada M5S1A7",
                                 "organization": "Department of Physics, University of Toronto, Toronto, Ontario",
-                                "country": "Canada",
+                                # "country": "Canada",
                             }
                         ],
                     },
@@ -113,7 +113,7 @@ def parsed_articles(parser, articles):
                             {
                                 "value": "Department of Physics, University of Toronto, Toronto, Ontario, Canada M5S1A7",
                                 "organization": "Department of Physics, University of Toronto, Toronto, Ontario",
-                                "country": "Canada",
+                                # "country": "Canada",
                             }
                         ],
                     },
@@ -125,7 +125,7 @@ def parsed_articles(parser, articles):
                             {
                                 "value": "Department of Physics, University of Toronto, Toronto, Ontario, Canada M5S1A7",
                                 "organization": "Department of Physics, University of Toronto, Toronto, Ontario",
-                                "country": "Canada",
+                                # "country": "Canada",
                             }
                         ],
                     },

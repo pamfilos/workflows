@@ -3,6 +3,7 @@ from os import listdir
 
 from pytest import fixture
 from springer.parser import SpringerParser
+from common.enhancer import Enhancer
 
 
 @fixture(scope="module")
@@ -72,8 +73,8 @@ def test_authors(parsed_articles):
                 "affiliations": [
                     {
                         "organization": "School of Physics, Korea Institute for Advanced Study",
-                        "value": "School of Physics, Korea Institute for Advanced Study, Dongdaemun-gu, Seoul, 02455, South Korea",
-                        "country": "South Korea",
+                        "value": "School of Physics, Korea Institute for Advanced Study, Dongdaemun-gu, Seoul, 02455, Korea",
+                        "country": "Korea",
                     }
                 ],
                 "surname": "Nosaka",
@@ -128,6 +129,13 @@ def test_authors(parsed_articles):
 
     for authors, parsed_article in zip(expected_results, parsed_articles):
         assert authors == parsed_article["authors"]
+
+        for author in authors:
+            for aff in author.get("affiliations", []):
+                if aff.get("country") is "Korea":
+                    aff["country"] = "South Korea"
+
+        assert Enhancer()("Springer", parsed_article)["authors"] == authors
 
 
 def test_title(parsed_articles):

@@ -3,7 +3,6 @@ import re
 from common.constants import ORGANIZATION_PARSING_PATTERN
 from common.parsing.parser import IParser
 from common.parsing.xml_extractors import ConstantExtractor, CustomExtractor
-from common.utils import parse_country_from_value
 from hindawi.xml_extractors import HindawiTextExtractor as TextExtractor
 from structlog import get_logger
 
@@ -121,7 +120,6 @@ class HindawiParser(IParser):
             {
                 "value": affiliation.text,
                 "organization": ORGANIZATION_PARSING_PATTERN.sub("", affiliation.text),
-                "country": parse_country_from_value(affiliation.text),
             }
             for affiliation in affiliations
         ]

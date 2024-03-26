@@ -21,7 +21,7 @@ from common.constants import (
     CREATIVE_COMMONS_PATTERN,
     LICENSE_PATTERN,
 )
-from common.countries_mapping import COUNTRIES_DEFAULT_MAPPING
+from common.constants import COUNTRIES_DEFAULT_MAPPING
 from common.exceptions import (
     FoundMoreThanOneMatchOrNone,
     UnknownFileExtension,
@@ -280,7 +280,7 @@ def parse_country_from_value(affiliation_value):
         if len(mapped_countries) > 1 or len(mapped_countries) == 0:
             raise FoundMoreThanOneMatchOrNone(affiliation_value)
         return mapped_countries[0].name
-    except:
+    except FoundMoreThanOneMatchOrNone:
         return find_country_match_from_mapping(affiliation_value)
 
 
@@ -288,3 +288,12 @@ def find_country_match_from_mapping(affiliation_value):
     for key in COUNTRIES_DEFAULT_MAPPING:
         if re.search(r"\b%s\b" % key, affiliation_value, flags=re.IGNORECASE):
             return COUNTRIES_DEFAULT_MAPPING[key]
+
+def get_country_ISO_name(country):
+    if COUNTRIES_DEFAULT_MAPPING[country]:
+        return COUNTRIES_DEFAULT_MAPPING[country]
+    countries = pycountry.countries.search_fuzzy(country)
+    if len(countries) > 1 or len(countries) == 0:
+        return country
+    else:
+        return countries[0].name

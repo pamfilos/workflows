@@ -24,6 +24,27 @@ def parser():
 
 
 @fixture
+def articles(parser):
+    data_dir = "./data/oup/"
+    test_file = "2022-09-22_00:30:02_ptep_iss_2022_9.xml.zip"
+
+    def extract_zip_to_article(zip_filename):
+        with ZipFile(zip_filename, "r") as zip_file:
+            xmls = [
+                file.filename for file in zip_file.filelist if ".xml" in file.filename
+            ]
+            xmls_content = [
+                parse_without_names_spaces(zip_file.read(xml).decode("utf-8"))
+                for xml in xmls
+            ]
+            return xmls_content
+
+    articles = extract_zip_to_article(data_dir + test_file)
+
+    return articles
+
+
+@fixture
 def article(parser):
     data_dir = "./data/oup/"
     test_file = "2022-09-22_00:30:02_ptep_iss_2022_9.xml.zip"
@@ -46,6 +67,17 @@ def article(parser):
 
     return enriched_file
 
+
+def test_affiliation_countries_in_enriched(parser, articles):
+    for article in articles:
+        parsed_file = parser.parse(article)
+        enhanced_file = oup_enhance_file(parsed_file)
+        enriched_file = oup_enrich_file(enhanced_file)
+
+        authors = enriched_file.get("authors", [])
+        for author in authors:
+            for aff in author.get("affiliations"):
+                assert aff.get("country") is not None
 
 def test_dag_loaded(dag):
     assert dag

@@ -179,7 +179,7 @@ class SpringerParser(IParser):
             ]
             if node is not None
         ]
-        country = parse_country_from_value(country_node.text)
+        country = country_node.text
         result.append(country)
         return ", ".join(result), org_name_node.text, country
 
@@ -211,7 +211,7 @@ class SpringerParser(IParser):
                 affiliations.append(cleaned_aff)
 
         mapped_affiliations = [
-            {"value": aff, "organization": org, "country": country}
+            {"value": aff, "organization": org, **({"country": country} if country else {})}
             for aff, org, country, in affiliations
         ]
 

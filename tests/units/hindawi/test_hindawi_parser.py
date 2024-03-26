@@ -47,7 +47,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "Grupo de Física Nuclear and Instituto Universitario de Física Fundamental y Matemáticas (IUFFyM), Universidad de Salamanca, E-37008 Salamanca, Spain",
                                 "organization": "Grupo de Física Nuclear and Instituto Universitario de Física Fundamental y Matemáticas (IUFFyM), Universidad de Salamanca, E-37008 Salamanca",
-                                "country": "Spain",
+                                # "country": "Spain",
                             }
                         ],
                         "orcid": "ORCID-0000-0003-2376-6255",
@@ -58,7 +58,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "Grupo de Física Nuclear and Instituto Universitario de Física Fundamental y Matemáticas (IUFFyM), Universidad de Salamanca, E-37008 Salamanca, Spain",
                                 "organization": "Grupo de Física Nuclear and Instituto Universitario de Física Fundamental y Matemáticas (IUFFyM), Universidad de Salamanca, E-37008 Salamanca",
-                                "country": "Spain",
+                                # "country": "Spain",
                             }
                         ],
                     },
@@ -68,7 +68,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "Grupo de Física Nuclear and Instituto Universitario de Física Fundamental y Matemáticas (IUFFyM), Universidad de Salamanca, E-37008 Salamanca, Spain",
                                 "organization": "Grupo de Física Nuclear and Instituto Universitario de Física Fundamental y Matemáticas (IUFFyM), Universidad de Salamanca, E-37008 Salamanca",
-                                "country": "Spain",
+                                # "country": "Spain",
                             }
                         ],
                     },
@@ -80,7 +80,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "Department of Physics, Yantai University, Yantai 264005, China",
                                 "organization": "Department of Physics, Yantai University, Yantai 264005",
-                                "country": "China",
+                                # "country": "China",
                             }
                         ],
                         "orcid": "https://orcid.org/0000-0002-1337-7662",
@@ -91,7 +91,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "Department of Physics, Yantai University, Yantai 264005, China",
                                 "organization": "Department of Physics, Yantai University, Yantai 264005",
-                                "country": "China",
+                                # "country": "China",
                             }
                         ],
                         "orcid": "https://orcid.org/0000-0002-9549-1863",
@@ -102,7 +102,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "Department of Physics, Yantai University, Yantai 264005, China",
                                 "organization": "Department of Physics, Yantai University, Yantai 264005",
-                                "country": "China",
+                                # "country": "China",
                             }
                         ],
                         "orcid": "https://orcid.org/0000-0002-6985-8174",
@@ -115,7 +115,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "Physik Department T31, James-Franck-Straße 1, Technische Universität München, D85748 Garching, Germany",
                                 "organization": "Physik Department T31, James-Franck-Straße 1, Technische Universität München, D85748 Garching",
-                                "country": "Germany",
+                                # "country": "Germany",
                             }
                         ],
                         "orcid": "https://orcid.org/0000-0001-5917-5786",
@@ -126,7 +126,7 @@ def parsed_articles(hindawi_parser, articles):
                             {
                                 "value": "College of Physics and Photoelectric Engineering, Ocean University of China, Qingdao 266100, China",
                                 "organization": "College of Physics and Photoelectric Engineering, Ocean University of China, Qingdao 266100",
-                                "country": "China",
+                                # "country": "China",
                             }
                         ],
                     },
