@@ -4,6 +4,9 @@ from io import BytesIO
 from common.repository import IRepository
 from common.s3_service import S3Service
 from common.utils import find_extension
+from structlog import get_logger
+
+logger = get_logger()
 
 
 class IOPRepository(IRepository):
@@ -12,7 +15,8 @@ class IOPRepository(IRepository):
 
     def __init__(self) -> None:
         super().__init__()
-        self.s3 = S3Service(os.getenv("IOP_BUCKET_NAME", "iop"))
+        self.bucket = os.getenv("IOP_BUCKET_NAME", "iop")
+        self.s3 = S3Service(self.bucket)
 
     def get_all_raw_filenames(self):
         return [

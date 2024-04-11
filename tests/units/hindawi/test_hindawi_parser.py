@@ -2,11 +2,6 @@ import xml.etree.ElementTree as ET
 
 import pytest
 from common.parsing.xml_extractors import RequiredFieldNotFoundExtractionError
-from hindawi.hindawi_file_processing import (
-    enhance_hindawi,
-    enrich_hindawi,
-    hindawi_validate_record,
-)
 from hindawi.parser import HindawiParser
 
 
@@ -283,12 +278,3 @@ def parsed_article_without_page_nr(hindawi_parser, article_without_page_nr):
 
 def test_page_nr(parsed_article_without_page_nr):
     assert parsed_article_without_page_nr["page_nr"] == [0]  # Default value
-
-
-@pytest.mark.vcr
-def test_hindawi_record_validation(hindawi_parser, parsed_article_without_page_nr):
-    enhanced = enhance_hindawi(
-        hindawi_parser._generic_parsing(parsed_article_without_page_nr)
-    )
-    enriched = enrich_hindawi(enhanced)
-    hindawi_validate_record(enriched)

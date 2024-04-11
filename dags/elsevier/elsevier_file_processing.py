@@ -1,23 +1,22 @@
-import base64
-
 import pendulum
-import requests
 from airflow.decorators import dag, task
 from common.enhancer import Enhancer
 from common.enricher import Enricher
 from common.exceptions import EmptyOutputFromPreviousTask
+from common.scoap3_s3 import Scoap3Repository
 from common.utils import create_or_update_article, parse_without_names_spaces
 from elsevier.parser import ElsevierParser
-from jsonschema import validate
+from elsevier.repository import ElsevierRepository
+from inspire_utils.record import get_value
+from structlog import get_logger
+
+logger = get_logger()
 
 
 def parse_elsevier(**kwargs):
-    try:
-        encoded_xml = kwargs["params"]["file_content"]
-    except KeyError:
-        raise Exception("There was no 'file_content' parameter. Exiting run.")
-    xml_bytes = base64.b64decode(encoded_xml)
-    xml = parse_without_names_spaces(xml_bytes.decode("utf-8"))
+    xml_content_bytes = kwargs["params"]["file_content"]
+
+    xml = parse_without_names_spaces(xml_content_bytes)
     parser = ElsevierParser()
     parsed = parser.parse(xml)
     try:
@@ -35,15 +34,16 @@ def enrich_elsevier(enhanced_file):
     return Enricher()(enhanced_file)
 
 
-def elsevier_validate_record(file_with_metadata):
-    schema = requests.get(file_with_metadata["$schema"]).json()
-    validate(file_with_metadata, schema)
-
-
 @dag(schedule=None, start_date=pendulum.today("UTC").add(days=-1))
 def elsevier_process_file():
+
+    s3_client = ElsevierRepository()
+
     @task()
     def parse(**kwargs):
+        xml_path = kwargs["params"]["file_name"]
+        xml_content_bytes = s3_client.get_by_id(xml_path)
+        kwargs["params"]["file_content"] = xml_content_bytes
         return parse_elsevier(**kwargs)
 
     @task()
@@ -53,16 +53,28 @@ def elsevier_process_file():
         raise EmptyOutputFromPreviousTask("parse_metadata")
 
     @task()
+    def populate_files(parsed_file):
+        if "files" not in parsed_file:
+            logger.info("No files to populate")
+            return parsed_file
+
+        logger.info("Populating files", files=parsed_file["files"])
+
+        s3_client_bucket = s3_client.bucket
+        s3_scoap3_client = Scoap3Repository()
+        doi = get_value(parsed_file, "dois.value[0]")
+        files = s3_scoap3_client.copy_files(
+            s3_client_bucket, parsed_file["files"], prefix=doi
+        )
+        parsed_file["files"] = files
+        logger.info("Files populated", files=parsed_file["files"])
+        return parsed_file
+
+    @task()
     def enrich(enhanced_file):
         if enhanced_file:
             return enrich_elsevier(enhanced_file)
         raise EmptyOutputFromPreviousTask("enhanced_file_with_metadata")
-
-    @task()
-    def validate_record(enriched_file):
-        if enriched_file:
-            return elsevier_validate_record(enriched_file)
-        raise EmptyOutputFromPreviousTask("enriched_file_with_metadata")
 
     @task()
     def create_or_update(enriched_file):
@@ -70,8 +82,8 @@ def elsevier_process_file():
 
     parsed_file = parse()
     enhanced_file = enhance(parsed_file)
-    enriched_file = enrich(enhanced_file)
-    validate_record(enriched_file)
+    enhanced_file_with_files = populate_files(enhanced_file)
+    enriched_file = enrich(enhanced_file_with_files)
     create_or_update(enriched_file)
 
 

@@ -182,42 +182,10 @@ def parsed_articles(parser, articles):
         ),
         pytest.param(
             [
-                [
-                    {
-                        "url": "http://harvest.aps.org/v2/journals/articles/{0}".format(
-                            "10.1103/PhysRevA.103.042607"
-                        ),
-                        "headers": {"Accept": "application/pdf"},
-                        "name": "{0}.pdf".format("10.1103/PhysRevA.103.042607"),
-                        "filetype": "pdf",
-                    },
-                    {
-                        "url": "http://harvest.aps.org/v2/journals/articles/{0}".format(
-                            "10.1103/PhysRevA.103.042607"
-                        ),
-                        "headers": {"Accept": "text/xml"},
-                        "name": "{0}.xml".format("10.1103/PhysRevA.103.042607"),
-                        "filetype": "xml",
-                    },
-                ],
-                [
-                    {
-                        "url": "http://harvest.aps.org/v2/journals/articles/{0}".format(
-                            "10.1103/PhysRevB.103.165408"
-                        ),
-                        "headers": {"Accept": "application/pdf"},
-                        "name": "{0}.pdf".format("10.1103/PhysRevB.103.165408"),
-                        "filetype": "pdf",
-                    },
-                    {
-                        "url": "http://harvest.aps.org/v2/journals/articles/{0}".format(
-                            "10.1103/PhysRevB.103.165408"
-                        ),
-                        "headers": {"Accept": "text/xml"},
-                        "name": "{0}.xml".format("10.1103/PhysRevB.103.165408"),
-                        "filetype": "xml",
-                    },
-                ],
+                {
+                    "pdf": "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevA.103.042607",
+                    "xml": "http://harvest.aps.org/v2/journals/articles/10.1103/PhysRevA.103.042607",
+                }
             ],
             "files",
             id="test_files",

@@ -3,6 +3,9 @@ from io import BytesIO
 
 from common.repository import IRepository
 from common.s3_service import S3Service
+from structlog import get_logger
+
+logger = get_logger()
 
 
 class OUPRepository(IRepository):
@@ -11,7 +14,8 @@ class OUPRepository(IRepository):
 
     def __init__(self):
         super().__init__()
-        self.s3 = S3Service(os.getenv("OUP_BUCKET_NAME", "oup"))
+        self.bucket = os.getenv("OUP_BUCKET_NAME", "oup")
+        self.s3 = S3Service(self.bucket)
 
     def get_all_raw_filenames(self):
         return [

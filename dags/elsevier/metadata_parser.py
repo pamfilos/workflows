@@ -64,7 +64,9 @@ class ElsevierMetadataParser(IParser):
                 for extractor in self.extractors
                 if (value := extractor.extract(journal_issue)) is not None
             }
-            extracted_value["journal_volume"] = self._get_journal_volume(article.find("dataset-content"))
+            extracted_value["journal_volume"] = self._get_journal_volume(
+                article.find("dataset-content")
+            )
             parsed_articles.append(self._generic_parsing(extracted_value))
         return parsed_articles
 
@@ -125,13 +127,13 @@ class ElsevierMetadataParser(IParser):
             article=article,
             path="journal-issue/journal-issue-properties/volume-issue-number/vol-first",
             field_name="volume_vol_first",
-            dois=None
+            dois=None,
         )
         suppl = extract_text(
             article=article,
             path="journal-issue/journal-issue-properties/volume-issue-number/suppl",
             field_name="volume_suppl",
-            dois=None
+            dois=None,
         )
 
         return f"{vol_first} {suppl}"
@@ -151,14 +153,16 @@ class ElsevierMetadataParser(IParser):
         if self.file_path.startswith("raw"):
             self.file_path = self.file_path.replace("raw/", "")
 
+        files_dir_base = os.path.dirname(self.file_path)
+
         pdf_file_path = os.path.join(
-            self.file_path,
+            files_dir_base,
             article.find("files-info/web-pdf/pathname").text,
         )
         return {
             "pdf": pdf_file_path,
             "pdfa": os.path.join(os.path.split(pdf_file_path)[0], "main_a-2b.pdf"),
             "xml": os.path.join(
-                self.file_path, article.find("files-info/ml/pathname").text
+                files_dir_base, article.find("files-info/ml/pathname").text
             ),
         }

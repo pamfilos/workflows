@@ -91,12 +91,6 @@ def test_dag_run_no_input_file(dag, dag_was_paused):
         DagModel.get_dagmodel(dag.dag_id).set_is_paused(is_paused=True)
 
 
-def test_dag_parse_file(article):
-    springer_parse_file(
-        params={"file": base64.b64encode(ET.tostring(article)).decode()}
-    )
-
-
 publisher = "Springer"
 generic_pseudo_parser_output = {
     "abstract": "this is abstracts",
@@ -173,14 +167,12 @@ def test_dag_enrich_file(assertListEqual):
         "arxiv_eprints": [{"value": "2112.01211"}],
         "curated": "Test Value",
         "citeable": "Test Value",
-        "files": "Test Value",
     }
     assertListEqual(
         {
             "arxiv_eprints": [
                 {"value": "2112.01211", "categories": list(set(["hep-th", "hep-ph"]))}
             ],
-            "$schema": "http://repo.qa.scoap3.org/schemas/hep.json",
         },
         springer_enrich_file(input_article),
     )

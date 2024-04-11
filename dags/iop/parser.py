@@ -1,4 +1,4 @@
-import xml.etree.ElementTree as ET
+import os
 
 from common.constants import (
     ARXIV_EXTRACTION_PATTERN,
@@ -34,7 +34,8 @@ class IOPParser(IParser):
         "editorial": "editorial",
     }
 
-    def __init__(self):
+    def __init__(self, file_path=None):
+        self.file_path = file_path
         self.dois = None
         self.year = None
         self.journal_doctype = None
@@ -128,6 +129,10 @@ class IOPParser(IParser):
                 source="front/article-meta/abstract/p",
                 all_content_between_tags=True,
                 extra_function=lambda x: x,
+            ),
+            CustomExtractor(
+                destination="files",
+                extraction_function=self._get_local_files,
             ),
         ]
         super().__init__(extractors)
@@ -391,6 +396,23 @@ class IOPParser(IParser):
                 type_and_version = get_license_type_and_version_from_url(url=url)
                 if type_and_version:
                     licenses.append(type_and_version)
-            except (KeyError):
+            except KeyError:
                 self.logger.error("License is not found in XML.")
         return licenses
+
+    def _get_local_files(self, article):
+        if not self.file_path:
+            self.logger.error("No file path provided")
+            return
+        self.logger.msg("Parsing local files", file=self.file_path)
+
+        dir_path = os.path.dirname(self.file_path)
+        file_name = os.path.basename(self.file_path).split(".")[0]
+        pdf_path = os.path.join(dir_path, f"{file_name}.pdf")
+
+        files = {
+            "xml": self.file_path,
+            "pdf": pdf_path,
+        }
+        self.logger.msg("Local files parsed", files=files)
+        return files

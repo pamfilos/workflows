@@ -4,7 +4,7 @@ import pytest
 from airflow.models import DagBag
 from common.utils import parse_to_ET_element
 from freezegun import freeze_time
-from iop.iop_process_file import iop_enhance_file, iop_enrich_file, iop_validate_record
+from iop.iop_process_file import iop_enhance_file, iop_enrich_file
 from iop.parser import IOPParser
 from pytest import fixture
 
@@ -48,11 +48,6 @@ def article(parser):
 def test_dag_loaded(dag):
     assert dag is not None
     assert len(dag.tasks) == 5
-
-
-@pytest.mark.vcr
-def test_dag_validate_file_processing(article):
-    iop_validate_record(article)
 
 
 publisher = "IOP"
@@ -137,14 +132,12 @@ def test_dag_enrich_file(assertListEqual):
         "arxiv_eprints": [{"value": "2112.01211"}],
         "curated": "Test Value",
         "citeable": "Test Value",
-        "files": "Test Value",
     }
     assertListEqual(
         {
             "arxiv_eprints": [
                 {"value": "2112.01211", "categories": list(set(["hep-th", "hep-ph"]))}
             ],
-            "$schema": "http://repo.qa.scoap3.org/schemas/hep.json",
         },
         iop_enrich_file(input_article),
     )

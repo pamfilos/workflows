@@ -169,7 +169,10 @@ def parse_to_ET_element(article):
 
 
 def parse_without_names_spaces(xml):
-    it = ET.iterparse(StringIO(xml))
+    if type(xml) == str:
+        it = ET.iterparse(StringIO(xml))
+    else:
+        it = ET.iterparse(StringIO(xml.getvalue().decode("utf-8")))
     for _, el in it:
         el.tag = el.tag.rpartition("}")[-1]
     root = it.root
@@ -243,6 +246,7 @@ def process_archive(file_bytes, file_name, **kwargs):
     max_tries=5,
 )
 def create_or_update_article(data):
+    logger.info("Sending data to the backend", data=data)
     backend_url = os.getenv(
         "BACKEND_URL", "http://localhost:8000/api/article-workflow-import/"
     )

@@ -111,7 +111,6 @@ class Enricher(object):
         enriched_article = article.copy()
         enriched_article.update(
             {
-                "$schema": self._get_schema(),
                 "arxiv_eprints": [
                     self._set_categories(eprint)
                     for eprint in enriched_article.get("arxiv_eprints", [])
@@ -120,4 +119,6 @@ class Enricher(object):
         )
         enriched_article = remove_empty_values(enriched_article)
         enriched_article = remove_unnecessary_fields(enriched_article)
+
+        self.logger.info("Enriched article.", article=enriched_article)
         return enriched_article

@@ -5,6 +5,9 @@ from common.exceptions import UnknownFileExtension
 from common.repository import IRepository
 from common.s3_service import S3Service
 from common.utils import find_extension
+from structlog import get_logger
+
+logger = get_logger()
 
 
 class ElsevierRepository(IRepository):
@@ -13,7 +16,8 @@ class ElsevierRepository(IRepository):
 
     def __init__(self):
         super().__init__()
-        self.s3 = S3Service(os.getenv("ELSEVIER_BUCKET_NAME", "elsevier"))
+        self.bucket = os.getenv("ELSEVIER_BUCKET_NAME", "elsevier")
+        self.s3 = S3Service(self.bucket)
 
     def get_all_raw_filenames(self):
         return [
@@ -45,13 +49,15 @@ class ElsevierRepository(IRepository):
         self.s3.download_fileobj(id, retfile)
         return retfile
 
-    def save(self, filename, obj):
+    def save(self, filename, obj, prefix=None):
+        logger.info("Saving file.", filename=filename)
         obj.seek(0)
-        prefix = (
-            self.ZIPED_DIR
-            if ".tar" in filename or ".zip" in filename
-            else self.EXTRACTED_DIR
-        )
+        if not prefix:
+            prefix = (
+                self.ZIPED_DIR
+                if ".tar" in filename or ".zip" in filename
+                else self.EXTRACTED_DIR
+            )
         self.s3.upload_fileobj(obj, prefix + filename)
 
     def delete_all(self):

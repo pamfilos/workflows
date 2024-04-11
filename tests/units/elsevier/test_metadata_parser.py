@@ -122,24 +122,24 @@ def parsed_articles(parser, article):
         param(
             [
                 {
-                    "pdf": "extracted/CERNQ000000010669A/CERNQ000000010669/S0550321323000354/main.pdf",
-                    "pdfa": "extracted/CERNQ000000010669A/CERNQ000000010669/S0550321323000354/main_a-2b.pdf",
-                    "xml": "extracted/CERNQ000000010669A/CERNQ000000010669/S0550321323000354/main.xml",
+                    "pdf": "extracted/CERNQ000000010669A/S0550321323000354/main.pdf",
+                    "pdfa": "extracted/CERNQ000000010669A/S0550321323000354/main_a-2b.pdf",
+                    "xml": "extracted/CERNQ000000010669A/S0550321323000354/main.xml",
                 },
                 {
-                    "pdf": "extracted/CERNQ000000010669A/CERNQ000000010669/S0550321323000366/main.pdf",
-                    "pdfa": "extracted/CERNQ000000010669A/CERNQ000000010669/S0550321323000366/main_a-2b.pdf",
-                    "xml": "extracted/CERNQ000000010669A/CERNQ000000010669/S0550321323000366/main.xml",
+                    "pdf": "extracted/CERNQ000000010669A/S0550321323000366/main.pdf",
+                    "pdfa": "extracted/CERNQ000000010669A/S0550321323000366/main_a-2b.pdf",
+                    "xml": "extracted/CERNQ000000010669A/S0550321323000366/main.xml",
                 },
                 {
-                    "pdf": "extracted/CERNQ000000010669A/CERNQ000000010669/S0370269323000643/main.pdf",
-                    "pdfa": "extracted/CERNQ000000010669A/CERNQ000000010669/S0370269323000643/main_a-2b.pdf",
-                    "xml": "extracted/CERNQ000000010669A/CERNQ000000010669/S0370269323000643/main.xml",
+                    "pdf": "extracted/CERNQ000000010669A/S0370269323000643/main.pdf",
+                    "pdfa": "extracted/CERNQ000000010669A/S0370269323000643/main_a-2b.pdf",
+                    "xml": "extracted/CERNQ000000010669A/S0370269323000643/main.xml",
                 },
                 {
-                    "pdf": "extracted/CERNQ000000010669A/CERNQ000000010669/S0370269323000850/main.pdf",
-                    "pdfa": "extracted/CERNQ000000010669A/CERNQ000000010669/S0370269323000850/main_a-2b.pdf",
-                    "xml": "extracted/CERNQ000000010669A/CERNQ000000010669/S0370269323000850/main.xml",
+                    "pdf": "extracted/CERNQ000000010669A/S0370269323000850/main.pdf",
+                    "pdfa": "extracted/CERNQ000000010669A/S0370269323000850/main_a-2b.pdf",
+                    "xml": "extracted/CERNQ000000010669A/S0370269323000850/main.xml",
                 },
             ],
             "files",
