@@ -15,7 +15,7 @@ def migrate_files(
     s_ftp,
     repo,
     logger: PrintLogger,
-    process_archives = True,
+    process_archives=True,
 ):
     logger.msg("Processing files.", filenames=archives_names)
     extracted_or_downloaded_filenames = []
@@ -58,7 +58,6 @@ def migrate_from_ftp(
     s_ftp,
     repo,
     logger,
-    publisher=None,
     **kwargs,
 ):
     params = kwargs["params"]
@@ -74,10 +73,10 @@ def migrate_from_ftp(
     )
 
     if force_pull_all_files:
-        return _force_pull(s_ftp, repo, logger, publisher, **kwargs)
+        return _force_pull(s_ftp, repo, logger, **kwargs)
     elif force_pull_specific_files:
-        return _filenames_pull(s_ftp, repo, logger, publisher, **kwargs)
-    return _differential_pull(s_ftp, repo, logger, publisher, **kwargs)
+        return _filenames_pull(s_ftp, repo, logger, **kwargs)
+    return _differential_pull(s_ftp, repo, logger, **kwargs)
 
 
 def reprocess_files(repo, logger, **kwargs):
@@ -91,32 +90,24 @@ def _force_pull(
     s_ftp,
     repo,
     logger,
-    publisher,
     **kwargs,
 ):
     logger.msg("Force Pulling from SFTP.")
     excluded_directories = kwargs["params"]["excluded_directories"]
     filenames = s_ftp.list_files(excluded_directories=excluded_directories)
-    process_archives = publisher != "elsevier"
-    return migrate_files(
-        filenames, s_ftp, repo, logger, process_archives=process_archives
-    )
+    return migrate_files(filenames, s_ftp, repo, logger)
 
 
 def _filenames_pull(
     s_ftp,
     repo,
     logger,
-    publisher,
     **kwargs,
 ):
     filenames_pull_params = kwargs["params"]["filenames_pull"]
     filenames = filenames_pull_params["filenames"]
     logger.msg("Pulling specified filenames from SFTP")
-    process_archives = publisher != "elsevier"
-    return migrate_files(
-        filenames, s_ftp, repo, logger, process_archives=process_archives
-    )
+    return migrate_files(filenames, s_ftp, repo, logger)
 
 
 def _find_files_in_zip(filenames, repo):
@@ -137,7 +128,6 @@ def _differential_pull(
     s_ftp,
     repo,
     logger,
-    publisher,
     **kwargs,
 ):
     logger.msg("Pulling missing files only.")
@@ -145,10 +135,7 @@ def _differential_pull(
     sftp_files = s_ftp.list_files(excluded_directories=excluded_directories)
     s3_files = repo.get_all_raw_filenames()
     diff_files = list(filter(lambda x: x not in s3_files, sftp_files))
-    process_archives = publisher != "elsevier"
-    return migrate_files(
-        diff_files, s_ftp, repo, logger, process_archives=process_archives
-    )
+    return migrate_files(diff_files, s_ftp, repo, logger)
 
 
 def trigger_file_processing(

@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from common.parsing.parser import IParser
 from common.parsing.xml_extractors import (
@@ -16,7 +17,8 @@ from structlog import get_logger
 
 
 class OUPParser(IParser):
-    def __init__(self) -> None:
+    def __init__(self, file_path=None):
+        self.file_path = file_path
         self.logger = get_logger().bind(class_name=type(self).__name__)
         self.article_type_mapping = {
             "research-article": "article",
@@ -109,6 +111,10 @@ class OUPParser(IParser):
             ConstantExtractor(
                 destination="collections",
                 value=["Progress of Theoretical and Experimental Physics"],
+            ),
+            CustomExtractor(
+                destination="files",
+                extraction_function=self._get_local_files,
             ),
         ]
         super().__init__(extractors)
@@ -256,3 +262,24 @@ class OUPParser(IParser):
             except (KeyError, TypeError):
                 self.logger.error("License is not found in XML.", dois=self.dois)
         return licenses
+
+    def _get_local_files(self, article):
+        if not self.file_path:
+            self.logger.error("No file path provided")
+            return
+        self.logger.msg("Parsing local files", file=self.file_path)
+
+        dir_path = os.path.dirname(self.file_path)
+        file_name = os.path.basename(self.file_path).split(".")[0]
+        pdf_dir_path = dir_path.replace("xml", "pdf")
+        pdfa_dir_path = dir_path.replace(".xml", "_archival")
+        pdf_path = os.path.join(pdf_dir_path, f"{file_name}.pdf")
+        pdfa_path = os.path.join(pdfa_dir_path, f"{file_name}.pdf")
+
+        files = {
+            "xml": self.file_path,
+            "pdf": pdf_path,
+            "pdfa": pdfa_path,
+        }
+        self.logger.msg("Local files parsed", files=files)
+        return files

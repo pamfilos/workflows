@@ -1,4 +1,5 @@
 import datetime
+import os
 import re
 
 from common.exceptions import UnknownLicense
@@ -13,7 +14,8 @@ from structlog import get_logger
 
 
 class SpringerParser(IParser):
-    def __init__(self):
+    def __init__(self, file_path=None):
+        self.file_path = file_path
         self.logger = get_logger().bind(class_name=type(self).__name__)
         self.dois = None
         article_type_mapping = {
@@ -110,6 +112,10 @@ class SpringerParser(IParser):
                 destination="collections",
                 source="./Journal/JournalInfo/JournalTitle",
                 extra_function=lambda x: [x.lstrip("The ")],
+            ),
+            CustomExtractor(
+                destination="files",
+                extraction_function=self._get_local_files,
             ),
         ]
         super().__init__(extractors)
@@ -286,3 +292,18 @@ class SpringerParser(IParser):
                 "url": "https://creativecommons.org/licenses/by/3.0",
             }
         ]
+
+    def _get_local_files(self, article):
+        if not self.file_path:
+            self.logger.error("No file path provided")
+            return
+        self.logger.msg("Parsing local files", pdf=self.file_path)
+
+        pdfa_name = f"{os.path.basename(self.file_path).split('.')[0]}.pdf"
+        pdfa_path = os.path.join(
+            os.path.dirname(self.file_path), "BodyRef", "PDF", pdfa_name
+        )
+        return {
+            "pdfa": pdfa_path,
+            "xml": self.file_path,
+        }

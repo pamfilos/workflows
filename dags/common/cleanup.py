@@ -59,7 +59,6 @@ def remove_unnecessary_fields(obj):
     fieldnames = [
         "curated",
         "citeable",
-        "files",
         "date_published",
         "source_file_path",
         "local_files",

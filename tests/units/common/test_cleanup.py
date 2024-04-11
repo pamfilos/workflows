@@ -257,7 +257,7 @@ def test_clean_all_affiliations_for_author(test_input, expected):
     "test_input, expected",
     [
         pytest.param(
-            {"curated": "Test Value", "citeable": "Test Value", "files": "Test Value"},
+            {"curated": "Test Value", "citeable": "Test Value"},
             {},
             id="Fields exist",
         ),

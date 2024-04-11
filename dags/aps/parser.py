@@ -6,6 +6,8 @@ from common.utils import construct_license
 from inspire_utils.record import get_value
 from structlog import get_logger
 
+logger = get_logger()
+
 
 class APSParser(IParser):
     def __init__(self) -> None:
@@ -74,7 +76,6 @@ class APSParser(IParser):
                 extraction_function=lambda x: ["HEP", "Citeable", "Published"],
             ),
             CustomExtractor("field_categories", self._get_field_categories),
-            CustomExtractor("files", self._build_files_data),
         ]
 
         super().__init__(extractors)
@@ -118,23 +119,6 @@ class APSParser(IParser):
             for term in get_value(
                 article, "classificationSchemes.subjectAreas", default=""
             )
-        ]
-
-    def _build_files_data(self, article):
-        doi = get_value(article, "identifiers.doi")
-        return [
-            {
-                "url": "http://harvest.aps.org/v2/journals/articles/{0}".format(doi),
-                "headers": {"Accept": "application/pdf"},
-                "name": "{0}.pdf".format(doi),
-                "filetype": "pdf",
-            },
-            {
-                "url": "http://harvest.aps.org/v2/journals/articles/{0}".format(doi),
-                "headers": {"Accept": "text/xml"},
-                "name": "{0}.xml".format(doi),
-                "filetype": "xml",
-            },
         ]
 
     def _get_licenses(self, x):

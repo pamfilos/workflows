@@ -6,19 +6,26 @@ from airflow.decorators import dag, task
 from common.enhancer import Enhancer
 from common.enricher import Enricher
 from common.exceptions import EmptyOutputFromPreviousTask
+from common.scoap3_s3 import Scoap3Repository
 from common.utils import create_or_update_article, parse_without_names_spaces
+from inspire_utils.record import get_value
 from jsonschema import validate
 from oup.parser import OUPParser
+from oup.repository import OUPRepository
+from structlog import get_logger
+
+logger = get_logger()
 
 
 def oup_parse_file(**kwargs):
     if "params" not in kwargs or "file" not in kwargs["params"]:
         raise KeyError("There was no 'file' parameter. Exiting run.")
     encoded_xml = kwargs["params"]["file"]
+    file_name = kwargs["params"]["file_name"]
     xml_bytes = base64.b64decode(encoded_xml)
     xml = parse_without_names_spaces(xml_bytes.decode("utf-8"))
 
-    parser = OUPParser()
+    parser = OUPParser(file_name)
     parsed = parser.parse(xml)
 
     return parsed
@@ -57,10 +64,22 @@ def oup_process_file():
         return oup_enrich_file(enhanced_file)
 
     @task()
-    def validate_record(enriched_file):
-        if not enriched_file:
-            raise EmptyOutputFromPreviousTask("enrich_file")
-        return oup_validate_record(enriched_file)
+    def populate_files(parsed_file):
+        if "files" not in parsed_file:
+            logger.info("No files to populate")
+            return parsed_file
+
+        logger.info("Populating files", files=parsed_file["files"])
+
+        s3_client_bucket = OUPRepository().bucket
+        s3_scoap3_client = Scoap3Repository()
+        doi = get_value(parsed_file, "dois.value[0]")
+        files = s3_scoap3_client.copy_files(
+            s3_client_bucket, parsed_file["files"], prefix=doi
+        )
+        parsed_file["files"] = files
+        logger.info("Files populated", files=parsed_file["files"])
+        return parsed_file
 
     @task()
     def create_or_update(enriched_file):
@@ -68,9 +87,9 @@ def oup_process_file():
 
     parsed_file = parse_file()
     enhanced_file = enhance_file(parsed_file)
-    enriched_file = enrich_file(enhanced_file)
-    validated_record = validate_record(enriched_file)
-    create_or_update(validated_record)
+    enhanced_file_with_files = populate_files(enhanced_file)
+    enriched_file = enrich_file(enhanced_file_with_files)
+    create_or_update(enriched_file)
 
 
 dag_taskflow = oup_process_file()

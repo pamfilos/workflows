@@ -1,11 +1,10 @@
 from zipfile import ZipFile
 
 import pytest
-from airflow import DAG
 from airflow.models import DagBag
 from common.utils import parse_without_names_spaces
 from freezegun import freeze_time
-from oup.oup_process_file import oup_enhance_file, oup_enrich_file, oup_validate_record
+from oup.oup_process_file import oup_enhance_file, oup_enrich_file
 from oup.parser import OUPParser
 from pytest import fixture
 
@@ -51,11 +50,6 @@ def article(parser):
 def test_dag_loaded(dag):
     assert dag
     assert len(dag.tasks) == 5
-
-
-@pytest.mark.vcr
-def test_dag_validate_file_processing(article):
-    oup_validate_record(article)
 
 
 publisher = "OUP"
@@ -140,14 +134,12 @@ def test_dag_enrich_file(assertListEqual):
         "arxiv_eprints": [{"value": "2112.01211"}],
         "curated": "Test Value",
         "citeable": "Test Value",
-        "files": "Test Value",
     }
     assertListEqual(
         {
             "arxiv_eprints": [
                 {"value": "2112.01211", "categories": list(set(["hep-th", "hep-ph"]))}
             ],
-            "$schema": "http://repo.qa.scoap3.org/schemas/hep.json",
         },
         oup_enrich_file(input_article),
     )
