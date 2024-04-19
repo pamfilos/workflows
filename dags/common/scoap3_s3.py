@@ -13,16 +13,21 @@ class Scoap3Repository(IRepository):
     def __init__(self):
         super().__init__()
         self.bucket = os.getenv("SCOAP3_BUCKET_NAME", "scoap3")
+        self.upload_dir = os.getenv("SCOAP3_BUCKET_UPLOAD_DIR", "files")
+        self.upload_enabled = os.getenv("SCOAP3_REPO_S3_ENABLED", False)
         self.s3 = S3Service(self.bucket)
         self.client = self.s3.meta.client
 
     def copy_file(self, source_bucket, source_key, prefix=None):
+        if not self.upload_enabled:
+            return ""
+
         if not prefix:
             prefix = str(uuid4())
 
         copy_source = {"Bucket": source_bucket, "Key": source_key}
         filename = os.path.basename(source_key)
-        destination_key = f"{prefix}/{filename}"
+        destination_key = f"{self.upload_dir}/{prefix}/{filename}"
 
         logger.info("Copying file from", copy_source=copy_source)
         self.client.copy(
@@ -91,11 +96,14 @@ class Scoap3Repository(IRepository):
         return downloaded_files
 
     def download_and_upload_to_s3(self, url, prefix=None, headers=None):
+        if not self.upload_enabled:
+            return ""
+
         if not prefix:
             prefix = str(uuid4())
 
         filename = os.path.basename(url)
-        destination_key = f"{prefix}/{filename}"
+        destination_key = f"{self.upload_dir}/{prefix}/{filename}"
 
         response = requests.get(url, headers=headers)
         try:
