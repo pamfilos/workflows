@@ -205,6 +205,7 @@ COUNTRIES_DEFAULT_MAPPING = OrderedDict(
         ("United States", "USA"),
         ("USA", "USA"),
         ("U.S.A", "USA"),
+        ("U.S.A.", "USA"),
         ("America", "USA"),
         ("Uruguay", "Uruguay"),
         ("Uzbekistan", "Uzbekistan"),
