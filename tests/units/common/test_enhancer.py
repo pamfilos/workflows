@@ -207,6 +207,66 @@ output_with_correct_affiliation = {
     "record_creation_date": "2022-05-20T00:00:00",
     "titles": [{"title": "title", "subtitle": "subtitle", "source": publisher}],
 }
+input_with_affiliation_value_only = {
+    "abstract": "this is abstracts",
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "value": "Department of Physics, Tsinghua University, Beijing 100084",
+                    "organization": "Department of Physics, Tsinghua University",
+                }
+            ],
+            "email": "test@email.com",
+            "full_name": "Test Surname, Test names",
+            "given_names": "Test names",
+            "surname": "Test Surname",
+            "orcid": "Test Id",
+        }
+    ],
+    "copyright_holder": "copyright_holder",
+    "copyright_year": "2020",
+    "copyright_statement": "copyright_statement",
+    "copyright_material": "copyright_material",
+    "date_published": "2022-05-20",
+    "title": "title",
+    "subtitle": "subtitle",
+}
+expected_output_with_affiliation_value_only = {
+    "abstracts": [{"value": "this is abstracts", "source": publisher}],
+    "authors": [
+        {
+            "affiliations": [
+                {
+                    "value": "Department of Physics, Tsinghua University, Beijing 100084",
+                    "organization": "Department of Physics, Tsinghua University",
+                    # "country": "China"
+                }
+            ],
+            "email": "test@email.com",
+            "full_name": "Test Surname, Test names",
+            "given_names": "Test names",
+            "surname": "Test Surname",
+            "orcid": "Test Id",
+        }
+    ],
+    "acquisition_source": {
+        "source": publisher,
+        "method": publisher,
+        "date": "2022-05-20T00:00:00",
+    },
+    "copyright": [
+        {
+            "holder": "copyright_holder",
+            "year": "2020",
+            "statement": "copyright_statement",
+            "material": "copyright_material",
+        }
+    ],
+    "imprints": [{"date": "2022-05-20", "publisher": publisher}],
+    "record_creation_date": "2022-05-20T00:00:00",
+    "titles": [{"title": "title", "subtitle": "subtitle", "source": publisher}],
+}
 
 
 @pytest.mark.parametrize(
@@ -229,6 +289,11 @@ output_with_correct_affiliation = {
         pytest.param(
             input_with_affiliation_of_cooperation_agreement_with_CERN_no_country,
             expected_output_with_affiliation_of_cooperation_agreement_with_CERN,
+            publisher,
+        ),
+        pytest.param(
+            input_with_affiliation_value_only,
+            expected_output_with_affiliation_value_only,
             publisher,
         ),
     ],

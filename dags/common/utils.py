@@ -290,10 +290,7 @@ def find_country_match_from_mapping(affiliation_value):
             return COUNTRIES_DEFAULT_MAPPING[key]
 
 def get_country_ISO_name(country):
-    if COUNTRIES_DEFAULT_MAPPING[country]:
+    if COUNTRIES_DEFAULT_MAPPING.get(country):
         return COUNTRIES_DEFAULT_MAPPING[country]
-    countries = pycountry.countries.search_fuzzy(country)
-    if len(countries) > 1 or len(countries) == 0:
-        return country
     else:
-        return countries[0].name
+        return country

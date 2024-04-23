@@ -91,6 +91,18 @@ def parsed_articles(parser, articles):
                             }
                         ],
                     },
+                    {
+                        "full_name": "Tim R. Borel",
+                        "given_names": "Tim R.",
+                        "surname": "Borel",
+                        "affiliations": [
+                            {
+                                "value": "Department of Physics, Tsinghua University, Beijing 100084",
+                                "organization": "Department of Physics, Tsinghua University",
+                                # "country": "China",
+                            }
+                        ],
+                    },
                 ],
                 [
                     {

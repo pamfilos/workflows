@@ -60,9 +60,12 @@ class Enhancer:
                     continue
 
                 if not affiliation.get("country"):
-                    affiliation["country"] = parse_country_from_value(affiliation.get("value"))
+                    _parsed_country = parse_country_from_value(affiliation.get("value"))
+                    if _parsed_country:
+                        affiliation["country"] = _parsed_country
 
-                affiliation["country"] = get_country_ISO_name(affiliation["country"])
+                if affiliation.get("country"):
+                    affiliation["country"] = get_country_ISO_name(affiliation["country"])
 
         return item
 
