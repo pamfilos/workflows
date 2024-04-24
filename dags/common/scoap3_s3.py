@@ -8,6 +8,18 @@ from structlog import get_logger
 
 logger = get_logger()
 
+FILE_EXTENSIONS = {
+    "pdf": ".pdf",
+    "xml": ".xml",
+    "pdfa": ".a_2b.pdf"
+}
+
+def update_filename_extension(filename, type):
+    extension = FILE_EXTENSIONS.get(type, "")
+    if filename.endsWith(extension):
+        return filename
+    elif extension:
+        return f"{filename}{extension}"
 
 class Scoap3Repository(IRepository):
     def __init__(self):
@@ -18,7 +30,7 @@ class Scoap3Repository(IRepository):
         self.s3 = S3Service(self.bucket)
         self.client = self.s3.meta.client
 
-    def copy_file(self, source_bucket, source_key, prefix=None):
+    def copy_file(self, source_bucket, source_key, prefix=None, type=None):
         if not self.upload_enabled:
             return ""
 
@@ -27,6 +39,7 @@ class Scoap3Repository(IRepository):
 
         copy_source = {"Bucket": source_bucket, "Key": source_key}
         filename = os.path.basename(source_key)
+        filename = update_filename_extension(filename, type)
         destination_key = f"{self.upload_dir}/{prefix}/{filename}"
 
         logger.info("Copying file from", copy_source=copy_source)
@@ -51,7 +64,7 @@ class Scoap3Repository(IRepository):
         copied_files = {}
         for type, path in files.items():
             try:
-                copied_files[type] = self.copy_file(bucket, path, prefix=prefix)
+                copied_files[type] = self.copy_file(bucket, path, prefix=prefix, type=type)
             except Exception as e:
                 logger.error("Failed to copy file.", error=str(e), type=type, path=path)
         return copied_files
@@ -65,7 +78,7 @@ class Scoap3Repository(IRepository):
         for type, url in files.items():
             try:
                 downloaded_files[type] = self.download_and_upload_to_s3(
-                    url, prefix=prefix
+                    url, prefix=prefix, type=type
                 )
                 logger.info("Downloaded file", type=type, url=url)
             except Exception as e:
@@ -86,7 +99,7 @@ class Scoap3Repository(IRepository):
             }
             try:
                 downloaded_files[type] = self.download_and_upload_to_s3(
-                    url, prefix=prefix, headers=headers
+                    url, prefix=prefix, headers=headers, type=type
                 )
                 logger.info("Downloaded file", type=type, url=url)
             except Exception as e:
@@ -95,7 +108,7 @@ class Scoap3Repository(IRepository):
                 )
         return downloaded_files
 
-    def download_and_upload_to_s3(self, url, prefix=None, headers=None):
+    def download_and_upload_to_s3(self, url, prefix=None, headers=None, type=None):
         if not self.upload_enabled:
             return ""
 
@@ -103,6 +116,7 @@ class Scoap3Repository(IRepository):
             prefix = str(uuid4())
 
         filename = os.path.basename(url)
+        filename = update_filename_extension(filename, type)
         destination_key = f"{self.upload_dir}/{prefix}/{filename}"
 
         response = requests.get(url, headers=headers)
