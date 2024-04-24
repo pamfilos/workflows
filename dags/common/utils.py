@@ -21,7 +21,10 @@ from common.constants import (
     CREATIVE_COMMONS_PATTERN,
     LICENSE_PATTERN,
 )
-from common.constants import COUNTRIES_DEFAULT_MAPPING
+from common.constants import (
+    COUNTRIES_DEFAULT_MAPPING,
+    INSTITUTIONS_AND_COUNTRIES_MAPPING,
+)
 from common.exceptions import (
     FoundMoreThanOneMatchOrNone,
     UnknownFileExtension,
@@ -274,13 +277,20 @@ def create_or_update_article(data):
 
 
 def parse_country_from_value(affiliation_value):
-    country = COUNTRY_PARSING_PATTERN.search(affiliation_value).group(0)
+    for key, val in INSTITUTIONS_AND_COUNTRIES_MAPPING.items():
+        if re.search(r'\b%s\b' % key, affiliation_value, flags=re.IGNORECASE):
+            return val
+    country = affiliation_value.split(",")[-1].strip()
+    for key, val in COUNTRIES_DEFAULT_MAPPING.items():
+        if re.search(r'\b%s\b' % key, country, flags=re.IGNORECASE):
+            return val
+
     try:
         mapped_countries = pycountry.countries.search_fuzzy(country)
         if len(mapped_countries) > 1 or len(mapped_countries) == 0:
             raise FoundMoreThanOneMatchOrNone(affiliation_value)
         return mapped_countries[0].name
-    except FoundMoreThanOneMatchOrNone:
+    except (LookupError, FoundMoreThanOneMatchOrNone):
         return find_country_match_from_mapping(affiliation_value)
 
 

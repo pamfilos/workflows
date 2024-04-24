@@ -9,7 +9,7 @@ from common.parsing.xml_extractors import (
     CustomExtractor,
     TextExtractor,
 )
-from common.utils import construct_license, parse_country_from_value
+from common.utils import construct_license
 from structlog import get_logger
 
 

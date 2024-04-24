@@ -4,7 +4,7 @@ from common.parsing.xml_extractors import (
     CustomExtractor,
     TextExtractor,
 )
-from common.utils import extract_text, parse_country_from_value
+from common.utils import extract_text
 from structlog import get_logger
 
 

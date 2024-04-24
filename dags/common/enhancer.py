@@ -61,7 +61,7 @@ class Enhancer:
 
                 if not affiliation.get("country"):
                     _parsed_country = parse_country_from_value(affiliation.get("value"))
-                    if _parsed_country:
+                    if _parsed_country is not None:
                         affiliation["country"] = _parsed_country
 
                 if affiliation.get("country"):
