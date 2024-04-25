@@ -53,6 +53,7 @@ class Scoap3Repository(IRepository):
                     "source_key": source_key,
                 },
                 "MetadataDirective": "REPLACE",
+                "ACL": "public-read"
             },
         )
         logger.info(
