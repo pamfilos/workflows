@@ -11,14 +11,16 @@ logger = get_logger()
 FILE_EXTENSIONS = {
     "pdf": ".pdf",
     "xml": ".xml",
-    "pdfa": ".a_2b.pdf"
+    "pdfa": ".pdf"
 }
 
 def update_filename_extension(filename, type):
     extension = FILE_EXTENSIONS.get(type, "")
-    if filename.endsWith(extension):
+    if filename.endswith(extension):
         return filename
     elif extension:
+        if type == "pdfa":
+            extension = f".a-2b.pdf"
         return f"{filename}{extension}"
 
 class Scoap3Repository(IRepository):
