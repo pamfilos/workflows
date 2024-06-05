@@ -1,4 +1,4 @@
-import datetime
+from datetime import date, datetime
 import io
 import json
 import os
@@ -49,7 +49,7 @@ def set_harvesting_interval(repo, **kwargs):
         kwargs.get("params", {}).get("from_date")
         or repo.find_the_last_uploaded_file_date()
     )
-    until_date = datetime.date.today().strftime("%Y-%m-%d")
+    until_date = date.today().strftime("%Y-%m-%d")
     return {
         "from_date": (from_date or until_date),
         "until_date": until_date,
