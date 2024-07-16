@@ -10,11 +10,14 @@ def clean_whitespace_characters(input):
 
 
 def convert_html_subsripts_to_latex(input):
-    from re import sub
+    input = re.sub("<sub>(.*?)</sub>", r"$_{\1}$", input)
+    input = re.sub("<inf>(.*?)</inf>", r"$_{\1}$", input)
+    input = re.sub("<sup>(.*?)</sup>", r"$^{\1}$", input)
+    return input
 
-    input = sub("<sub>(.*?)</sub>", r"$_{\1}$", input)
-    input = sub("<inf>(.*?)</inf>", r"$_{\1}$", input)
-    input = sub("<sup>(.*?)</sup>", r"$^{\1}$", input)
+
+def convert_html_italics_to_latex(input):
+    input = re.sub(r"<italic\b[^>]*>(.*?)</italic>", r"$\\textit{\1}$", input)
     return input
 
 
@@ -26,6 +29,15 @@ def remove_specific_tags(value, tags=None, attributes=None):
     tags = tags or {}
     attributes = attributes or {}
     return clean(value, tags=tags, attributes=attributes, strip=True)
+
+
+def replace_cdata_format(text):
+    CDATA_PATTERN = re.compile(r"<\?CDATA(.*)\?>")
+    # pattern = re.compile(r'<\?CDATA\s(.*?)\s\?>', re.DOTALL)
+
+    replaced_text = CDATA_PATTERN.sub(r'<![CDATA[ \1 ]]>', text)
+
+    return replaced_text
 
 
 class RemoveLabelTagsContentFilter(Filter):

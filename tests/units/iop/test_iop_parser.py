@@ -4,8 +4,10 @@ from common.constants import ARXIV_EXTRACTION_PATTERN
 from common.enhancer import Enhancer
 from common.exceptions import UnknownLicense
 from common.parsing.xml_extractors import RequiredFieldNotFoundExtractionError
-from common.utils import parse_to_ET_element
+from common.utils import parse_element_text, parse_to_ET_element
+from common.cleanup import replace_cdata_format
 from iop.parser import IOPParser
+from iop.iop_process_file import process_xml
 from pytest import fixture, mark, param, raises
 
 
@@ -539,34 +541,40 @@ def test_no_authors(shared_datadir, parser):
         parser._publisher_specific_parsing(article)
 
 
+
+def test_title(shared_datadir, parser):
+    content = (shared_datadir / "title_and_abstract_with_cdata.xml").read_text()
+    content = replace_cdata_format(content)
+
+    article = ET.fromstring(content)
+    parsed_article = parser._publisher_specific_parsing(article)
+    assert (
+        parsed_article["title"]
+        == r"Analysis of ${{\\boldsymbol b}{\\bf\\rightarrow} {\\boldsymbol c}{\\boldsymbol\\tau}"
+        r"\\bar{\\boldsymbol\\nu}_{\\boldsymbol\\tau}}$ anomalies using weak effective Hamiltonian"
+        r" with complex couplings and their impact on various physical observables"
+    )
+
+
 def test_abstract(shared_datadir, parser):
     content = (shared_datadir / "abstract.xml").read_text()
-    article = parse_to_ET_element(content)
+    content = process_xml(content)
+    article = ET.fromstring(content)
     parsed_article = parser._publisher_specific_parsing(article)
     assert (
         parsed_article["abstract"]
-        == r"Solar, terrestrial, and supernova neutrino experiments are subject to muon-induc"
-        r"ed radioactive background. The China Jinping Underground Laboratory (CJPL), with"
-        r" its unique advantage of a 2400 m rock coverage and long distance from nuclear p"
-        r"ower plants, is ideal for MeV-scale neutrino experiments. Using a 1-ton prototyp"
-        r"e detector of the Jinping Neutrino Experiment (JNE), we detected 343 high-energy"
-        r" cosmic-ray muons and (7.86 <inline-formula xmlns:ns0='http://www.w3.org/1999/xl"
-        r"ink'> <tex-math> $ \pm $ </tex-math> <inline-graphic ns0:href='cpc_46_8_085001_M"
-        r"1.jpg' ns0:type='simple' /> </inline-formula> 3.97) muon-induced neutrons from a"
-        r"n 820.28-day dataset at the first phase of CJPL (CJPL-I). Based on the muon-indu"
-        r"ced neutrons, we measured the corresponding muon-induced neutron yield in a liqu"
-        r"id scintillator to be <inline-formula xmlns:ns0='http://www.w3.org/1999/xlink'> "
-        r"<tex-math> $(3.44 \pm 1.86_{\rm stat.}\pm $ </tex-math> <inline-graphic ns0:href"
-        r"='cpc_46_8_085001_M2.jpg' ns0:type='simple' /> </inline-formula> <inline-formula"
-        r" xmlns:ns0='http://www.w3.org/1999/xlink'> <tex-math> $ 0.76_{\rm syst.})\times "
-        r"10^{-4}$ </tex-math> <inline-graphic ns0:href='cpc_46_8_085001_M2-1.jpg' ns0:typ"
-        r"e='simple' /> </inline-formula> &#956; <sup>&#8722;1</sup> g <sup>&#8722;1</sup>"
-        r" cm <sup>2</sup> at an average muon energy of 340 GeV. We provided the first stu"
-        r"dy for such neutron background at CJPL. A global fit including this measurement "
-        r"shows a power-law coefficient of (0.75 <inline-formula xmlns:ns0='http://www.w3."
-        r"org/1999/xlink'> <tex-math> $ \pm $ </tex-math> <inline-graphic ns0:href='cpc_46"
-        r"_8_085001_M3.jpg' ns0:type='simple' /> </inline-formula> 0.02) for the dependenc"
-        r"e of the neutron yield at the liquid scintillator on muon energy."
+        == r"Solar, terrestrial, and supernova neutrino experiments are subject to muon-induced"
+        r" radioactive background. The China Jinping Underground Laboratory (CJPL), with its "
+        r"unique advantage of a 2400 m rock coverage and long distance from nuclear power plants,"
+        r" is ideal for MeV-scale neutrino experiments. Using a 1-ton prototype detector of the "
+        r"Jinping Neutrino Experiment (JNE), we detected 343 high-energy cosmic-ray muons and "
+        r"(7.86 $ \pm $ 3.97) muon-induced neutrons from an 820.28-day dataset at the first "
+        r"phase of CJPL (CJPL-I). Based on the muon-induced neutrons, we measured the corresponding "
+        r"muon-induced neutron yield in a liquid scintillator to be $(3.44 \pm 1.86_{\rm stat.}\pm $"
+        r" $ 0.76_{\rm syst.})\times 10^{-4}$ μ $^{−1}$ g $^{−1}$ cm $^{2}$ at an average muon energy"
+        r" of 340 GeV. We provided the first study for such neutron background at CJPL. A global fit "
+        r"including this measurement shows a power-law coefficient of (0.75 $ \pm $ 0.02) for the "
+        r"dependence of the neutron yield at the liquid scintillator on muon energy."
     )
 
 
@@ -803,7 +811,12 @@ def test_title(shared_datadir, parser):
     parsed_article = parser._publisher_specific_parsing(article)
     assert (
         parsed_article["title"]
-        == "Measurement of muon-induced neutron yield at the China Jinping Underground Laboratory <xref ref-type='fn' rid='cpc_46_8_085001_fn1'>*</xref> <fn id='cpc_46_8_085001_fn1'> <label>*</label> <p>Supported in part by the National Natural Science Foundation of China (11620101004, 11475093, 12127808), the Key Laboratory of Particle &amp; Radiation Imaging (TsinghuaUniversity), the CAS Center for Excellence in Particle Physics (CCEPP), and Guangdong Basic and Applied Basic Research Foundation (2019A1515012216). Portion of this work performed at Brookhaven National Laboratory is supported in part by the United States Department of Energy (DE-SC0012704)</p> </fn>"
+        == "Measurement of muon-induced neutron yield at the China Jinping Underground Laboratory"
+        " * Supported in part by the National Natural Science Foundation of China (11620101004, "
+        "11475093, 12127808), the Key Laboratory of Particle & Radiation Imaging (TsinghuaUniversity),"
+        " the CAS Center for Excellence in Particle Physics (CCEPP), and Guangdong Basic and Applied "
+        "Basic Research Foundation (2019A1515012216). Portion of this work performed at Brookhaven "
+        "National Laboratory is supported in part by the United States Department of Energy (DE-SC0012704)"
     )
 
 
@@ -876,6 +889,54 @@ def test_cdata_with_regex():
     assert string_abstract == b"<p> Data in Cdata Data not in CDATA</p>\n    "
 
 
+def test_cdata_abstract_title(shared_datadir):
+    content = (shared_datadir / "title_and_abstract_with_cdata.xml").read_text()
+    content = replace_cdata_format(content)
+    ET_article = parse_to_ET_element(content)
+
+
+    abstract_element = ET_article.find("front/article-meta/abstract/p")
+    abstract_text = parse_element_text(abstract_element)
+    assert (abstract_text
+        == "Recently, the experimental measurements of the branching ratios and different"
+        " polarization asymmetries for processes occurring through flavor-changing-charged"
+        " current $ (b\\rightarrow c\\tau\\overline{\\nu}_{\\tau}) $ transitions by BABAR,"
+        " Belle, and LHCb have revealed some significant differences from the corresponding"
+        " Standard Model (SM) predictions. This has triggered an interest to search for physics"
+        " beyond the SM in the context of various new physics (NP) models and using the model-independent"
+        " weak effective Hamiltonian (WEH). Assuming left-handed neutrinos, we add the dimension-six vector,"
+        " (pseudo-)scalar, and tensor operators with complex Wilson coefficients (WCs) to the SM WEH. Using"
+        " 60%, 30%, and 10% constraints resulting from the branching ratio of $ B_{c}\\to\\tau\\bar{\\nu}_{\\tau} $"
+        " , we reassess the parametric space of these new physics WCs accommodating the current anomalies"
+        " based on the most recent HFLAV data of $ R_{\\tau/{\\mu,e}}\\left(D\\right) $ and"
+        " $ R_{\\tau/{\\mu,e}}\\left(D^*\\right) $ and Belle data of $ F_{L}\\left(D^*\\right) $"
+        " and $ P_{\\tau}\\left(D^*\\right) $ . We find that the allowed parametric region of left-handed"
+        " scalar couplings strongly depends on the constraints of the $ B_{c}\\rightarrow \\tau\\bar{\\nu}_{\\tau} $"
+        " branching ratio, and the maximum pull from the SM predictions results from the <60% branching ratio limit."
+        " Also, the parametric region changes significantly if we extend the analysis by adding LHCb data of "
+        "$ R_{\\tau/\\mu}\\left(J/\\psi\\right) $ and $ R_{\\tau/\\ell}\\left(\\Lambda_c\\right) $ . Furthermore,"
+        " due to the large uncertainties in the measurements of $ R_{\\tau/\\mu}\\left(J/\\psi\\right) $ and"
+        " $ R_{\\tau/\\ell}\\left(X_c\\right) $ , we derive the sum rules which complement them with "
+        "$ R_{\\tau/{\\mu,e}}\\left(D\\right) $ and $ R_{\\tau/{\\mu,e}}\\left(D^*\\right) $ . Using the"
+        " best-fit points of the new complex WCs along with the latest measurements of "
+        "$ R_{\\tau/{\\mu,e}}\\left(D^{(*)}\\right) $ , we predict the numerical values of the observable"
+        " $ R_{\\tau/\\ell}\\left(\\Lambda_c\\right) $ , $ R_{\\tau/\\mu}\\left(J/\\psi\\right) $ , "
+        "and $ R_{\\tau/\\ell}\\left(X_c\\right) $ from the sum rules. The simultaneous dependence of "
+        "abovementioned physical observables on the NP WCs is established by plotting their correlation "
+        "with $ R_{D} $ and $ R_{D^*} $ , which are useful to discriminate between various NP scenarios."
+        " We find that the most significant impact of NP results from the WC $ C_{L}^{S}=4C^{T} $ . Finally,"
+        " we study the impact of these NP couplings on various angular and $ CP $ triple product asymmetries"
+        " that could be measured in some ongoing and future experiments. The precise measurements of these "
+        "observables are important to check the SM and extract the possible NP."
+    )
+    title_element = ET_article.find("front/article-meta/title-group/article-title")
+    title_text = parse_element_text(title_element)
+    assert (title_text
+            == "Analysis of ${{\\boldsymbol b}{\\bf\\rightarrow} {\\boldsymbol c}{\\boldsymbol\\tau}\\bar"
+            "{\\boldsymbol\\nu}_{\\boldsymbol\\tau}}$ anomalies using weak effective Hamiltonian with "
+            "complex couplings and their impact on various physical observables"
+    )
+
 def test_cdata_without_regex():
     paseudo_aricle = """
     <article>
@@ -906,20 +967,28 @@ def test_cdata_without_regex():
 
 def test_title_starting_with_tags(shared_datadir, parser):
     content = (shared_datadir / "aca95c.xml").read_text()
+    content = process_xml(content)
     article = ET.fromstring(content)
     parsed_article = parser._publisher_specific_parsing(article)
     assert (
         parsed_article["title"]
-        == "<italic toggle='yes'>R</italic>-Symmetric NMSSM <xref ref-type='fn' rid='cpc_47_4_043105_fn1'>*</xref> <fn id='cpc_47_4_043105_fn1'><label>*</label><p>Supported in part by the National Natural Science Foundation of China (11775039), the High-level Talents Research and Startup Foundation Projects for Doctors of Zhoukou Normal University (ZKNUC2021006), and Scientific research projects of universities in Henan Province, China (23A140027).</p></fn>"
+        == "$\\textit{R}$-Symmetric NMSSM * Supported in part by the National Natural Science Foundation of "
+        "China (11775039), the High-level Talents Research and Startup Foundation Projects for Doctors of "
+        "Zhoukou Normal University (ZKNUC2021006), and Scientific research projects of universities in"
+        " Henan Province, China (23A140027)."
     )
 
 
 def test_title_starting_with_tags_after_enhancer(shared_datadir, parser):
     content = (shared_datadir / "aca95c.xml").read_text()
+    content = process_xml(content)
     article = ET.fromstring(content)
     parsed_article = parser.parse(article)
     enhanced_file = Enhancer()("IOP", parsed_article)
     assert (
         enhanced_file["titles"][0]["title"]
-        == "<italic toggle='yes'>R</italic>-Symmetric NMSSM <xref ref-type='fn' rid='cpc_47_4_043105_fn1'>*</xref>"
+        == "$\\textit{R}$-Symmetric NMSSM * Supported in part by the National Natural Science Foundation of "
+        "China (11775039), the High-level Talents Research and Startup Foundation Projects for Doctors of "
+        "Zhoukou Normal University (ZKNUC2021006), and Scientific research projects of universities in"
+        " Henan Province, China (23A140027)."
     )

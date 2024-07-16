@@ -114,6 +114,7 @@ class IOPParser(IParser):
                 required=True,
                 all_content_between_tags=True,
                 source="front/article-meta/title-group/article-title",
+                remove_tags=True
             ),
             TextExtractor(
                 destination="subtitle",
@@ -130,6 +131,7 @@ class IOPParser(IParser):
                 source="front/article-meta/abstract/p",
                 all_content_between_tags=True,
                 extra_function=lambda x: x,
+                remove_tags=True
             ),
             CustomExtractor(
                 destination="files",

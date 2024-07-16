@@ -250,6 +250,29 @@ def process_archive(file_bytes, file_name, **kwargs):
         return process_tar_file(file_bytes, file_name, **kwargs)
 
 
+def parse_element_text(item):
+    title_parts = []
+
+    def iterate_element(item):
+        if item.tag in ["xref"]:
+            return
+        if item.tag in ["math"]:
+            return
+        if item.text:
+            title_parts.append(item.text.strip())
+        for subitem in item:
+            iterate_element(subitem)
+        if item.tail:
+            title_parts.append(item.tail.strip())
+
+    iterate_element(item)
+
+    title_part = [i for i in title_parts if i]
+    full_text = ' '.join(title_part).strip()
+
+    return full_text
+
+
 @backoff.on_exception(
     backoff.expo,
     (requests.exceptions.ConnectionError, requests.exceptions.Timeout),

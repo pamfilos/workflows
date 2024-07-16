@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from common.constants import WHITE_SPACES
 from common.exceptions import RequiredFieldNotFoundExtractionError
 from common.parsing.extractor import IExtractor
-from common.utils import check_value
+from common.utils import check_value, parse_element_text
 from structlog import get_logger
 
 
@@ -17,6 +17,7 @@ class TextExtractor(IExtractor):
         extra_function=lambda s: s,
         prefixes=None,
         all_content_between_tags=False,
+        remove_tags=False
     ):
         super().__init__(destination)
 
@@ -27,6 +28,7 @@ class TextExtractor(IExtractor):
         self.default_value = default_value
         self.extra_function = extra_function
         self.all_content_between_tags = all_content_between_tags
+        self.remove_tags = remove_tags
         self.logger = get_logger().bind(class_name=type(self).__name__)
 
     def _get_text_value(self, raw_value):
@@ -38,13 +40,17 @@ class TextExtractor(IExtractor):
 
     def _get_content_as_text_value(self, node):
         try:
-            values_in_regular_tags = [node.text or ""]
-            values_math_expression_and_styling_tags = [
-                ET.tostring(el).decode("ascii") for el in node
-            ]
-            extracted_value = " ".join(
-                values_in_regular_tags + values_math_expression_and_styling_tags
-            )
+            if self.remove_tags:
+                extracted_value = parse_element_text(node)
+            else:
+                values_in_regular_tags = [node.text or ""]
+                values_math_expression_and_styling_tags = [
+                    ET.tostring(el).decode("ascii") for el in node
+                ]
+                extracted_value = " ".join(
+                    values_in_regular_tags + values_math_expression_and_styling_tags
+                )
+
             return WHITE_SPACES.sub(" ", extracted_value).strip()
         except AttributeError:
             self.logger.error(f"{self.destination} is not found in XML")
