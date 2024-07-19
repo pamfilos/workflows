@@ -295,7 +295,7 @@ class IOPParser(IParser):
             if country:
                 institution_and_country["country"] = country
             if institution and country:
-                institution_and_country["institution"] = ", ".join(
+                institution_and_country["organization"] = ", ".join(
                     [institution, country]
                 )
             return institution_and_country

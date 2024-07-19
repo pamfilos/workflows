@@ -140,7 +140,7 @@ def test_authors(parsed_articles):
                 "email": "a_iwazaki@hotmail.com",
                 "affiliations": [
                     {
-                        "institution": "International Economics and Politics, Nishogakusha University",
+                        "organization": "International Economics and Politics, Nishogakusha University",
                         "country": "Japan",
                     }
                 ],
@@ -153,7 +153,7 @@ def test_authors(parsed_articles):
                 "email": "kunitomo@yukawa.kyoto-u.ac.jp",
                 "affiliations": [
                     {
-                        "institution": "Center for Gravitational Physics and Quantum Information, Yukawa Institute for Theoretical Physics",
+                        "organization": "Center for Gravitational Physics and Quantum Information, Yukawa Institute for Theoretical Physics",
                         "country": "Japan",
                     }
                 ],
@@ -166,7 +166,7 @@ def test_authors(parsed_articles):
                 "email": "rgarg_phd19@thapar.edu",
                 "affiliations": [
                     {
-                        "institution": "School of Physics and Materials Science, Thapar Institute of Engineering and Technology",
+                        "organization": "School of Physics and Materials Science, Thapar Institute of Engineering and Technology",
                         "country": "India",
                     }
                 ],
@@ -177,7 +177,7 @@ def test_authors(parsed_articles):
                 "email": None,
                 "affiliations": [
                     {
-                        "institution": "School of Physics and Materials Science, Thapar Institute of Engineering and Technology",
+                        "organization": "School of Physics and Materials Science, Thapar Institute of Engineering and Technology",
                         "country": "India",
                     }
                 ],
@@ -190,7 +190,7 @@ def test_authors(parsed_articles):
                 "email": None,
                 "affiliations": [
                     {
-                        "institution": "Department of Physics, Kyoto University",
+                        "organization": "Department of Physics, Kyoto University",
                         "country": "Japan",
                     }
                 ],
@@ -201,7 +201,7 @@ def test_authors(parsed_articles):
                 "email": None,
                 "affiliations": [
                     {
-                        "institution": "Department of Physics, Kyoto University",
+                        "organization": "Department of Physics, Kyoto University",
                         "country": "Japan",
                     }
                 ],
@@ -212,7 +212,7 @@ def test_authors(parsed_articles):
                 "email": "george.yoshinaka@gauge.scphys.kyoto-u.ac.jp",
                 "affiliations": [
                     {
-                        "institution": "Department of Physics, Kyoto University",
+                        "organization": "Department of Physics, Kyoto University",
                         "country": "Japan",
                     }
                 ],
@@ -240,7 +240,7 @@ def test_no_authors_names(shared_datadir, parser):
             "email": None,
             "affiliations": [
                 {
-                    "institution": "Department of Physics, Kyoto University",
+                    "organization": "Department of Physics, Kyoto University",
                     "country": "Japan",
                 }
             ],
@@ -251,7 +251,7 @@ def test_no_authors_names(shared_datadir, parser):
             "email": None,
             "affiliations": [
                 {
-                    "institution": "Department of Physics, Kyoto University",
+                    "organization": "Department of Physics, Kyoto University",
                     "country": "Japan",
                 }
             ],
@@ -262,7 +262,7 @@ def test_no_authors_names(shared_datadir, parser):
             "email": "george.yoshinaka@gauge.scphys.kyoto-u.ac.jp",
             "affiliations": [
                 {
-                    "institution": "Department of Physics, Kyoto University",
+                    "organization": "Department of Physics, Kyoto University",
                     "country": "Japan",
                 }
             ],
@@ -636,11 +636,11 @@ def test_authors_parsing_with_orcid(article_with_orcid):
             "given_names": "T T",
             "affiliations": [
                 {
-                    "institution": "An Giang University",
+                    "organization": "An Giang University",
                     "country": "Vietnam"
                 },
                 {
-                    "institution": "Vietnam National University",
+                    "organization": "Vietnam National University",
                     "country": "Vietnam"
                 }
             ],
@@ -652,11 +652,11 @@ def test_authors_parsing_with_orcid(article_with_orcid):
             "given_names": "V K",
             "affiliations": [
                 {
-                    "institution": "An Giang University",
+                    "organization": "An Giang University",
                     "country": "Vietnam"
                 },
                 {
-                    "institution": "Binh Thuy Junior High School",
+                    "organization": "Binh Thuy Junior High School",
                     "country": "Vietnam"
                 }
             ],
@@ -667,7 +667,7 @@ def test_authors_parsing_with_orcid(article_with_orcid):
             "given_names": "L T T",
             "affiliations": [
                 {
-                    "institution": "An Giang University",
+                    "organization": "An Giang University",
                     "country": "Vietnam"
                 }
             ],
@@ -678,7 +678,7 @@ def test_authors_parsing_with_orcid(article_with_orcid):
             "given_names": "N C",
             "affiliations": [
                 {
-                    "institution": "An Giang University",
+                    "organization": "An Giang University",
                     "country": "Vietnam"
                 }
             ],
@@ -689,7 +689,7 @@ def test_authors_parsing_with_orcid(article_with_orcid):
             "given_names": "N T K",
             "affiliations": [
                 {
-                    "institution": "Department of Physics, Can Tho University",
+                    "organization": "Department of Physics, Can Tho University",
                     "country": "Vietnam"
                 }
             ],
@@ -701,11 +701,11 @@ def test_authors_parsing_with_orcid(article_with_orcid):
             "email": "nguyenhuathanhnha@vlu.edu.vn",
             "affiliations": [
                 {
-                    "institution": "Subatomic Physics Research Group, Science and Technology Advanced Institute, Van Lang University",
+                    "organization": "Subatomic Physics Research Group, Science and Technology Advanced Institute, Van Lang University",
                     "country": "Vietnam"
                 },
                 {
-                    "institution": "Faculty of Applied Technology, School of Engineering and Technology, Van Lang University",
+                    "organization": "Faculty of Applied Technology, School of Engineering and Technology, Van Lang University",
                     "country": "Vietnam"
                 }
             ],
