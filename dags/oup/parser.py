@@ -180,7 +180,7 @@ class OUPParser(IParser):
                         "institution",
                     )
                 )
-                _aff = {"institution": institution}
+                _aff = {"organization": institution}
                 if country:
                     country = country.capitalize()
                     _aff["country"] = country
