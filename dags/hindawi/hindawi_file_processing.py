@@ -61,9 +61,9 @@ def hindawi_file_processing():
         logger.info("Populating files", doi=doi)
         doi_part = doi.split("10.1155/")[1]
         files = {
-            "pdf": f"http://downloads.hindawi.com/journals/ahep/{doi_part}.pdf",
-            "pdfa": f"http://downloads.hindawi.com/journals/ahep/{doi_part}.a.pdf",
-            "xml": f"http://downloads.hindawi.com/journals/ahep/{doi_part}.xml",
+            "pdf": f"https://s3.amazonaws.com/downloads.hindawi.com/journals/ahep/{doi_part}.pdf",
+            "pdfa": f"https://s3.amazonaws.com/downloads.hindawi.com/journals/ahep/{doi_part}.a.pdf",
+            "xml": f"https://s3.amazonaws.com/downloads.hindawi.com/journals/ahep/{doi_part}.xml",
         }
         s3_scoap3_client = Scoap3Repository()
         downloaded_files = s3_scoap3_client.download_files(files, prefix=doi)
