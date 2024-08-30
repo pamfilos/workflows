@@ -165,21 +165,21 @@ def parsed_articles(hindawi_parser, articles):
                     {
                         "journal_title": "Advances in High Energy Physics",
                         "journal_volume": "2019",
-                        "journal_year": "2019",
+                        "year": "2019",
                     }
                 ],
                 [
                     {
                         "journal_title": "Advances in High Energy Physics",
                         "journal_volume": "2022",
-                        "journal_year": "2022",
+                        "year": "2022",
                     }
                 ],
                 [
                     {
                         "journal_title": "Advances in High Energy Physics",
                         "journal_volume": "2022",
-                        "journal_year": "2022",
+                        "year": "2022",
                     }
                 ],
             ],
