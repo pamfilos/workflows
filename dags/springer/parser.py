@@ -169,6 +169,11 @@ class SpringerParser(IParser):
         state_node = article.find("./OrgAddress/State")
         postcode_node = article.find("./OrgAddress/Postcode")
         country_node = article.find("./OrgAddress/Country")
+        ror_node = article.find("./OrgID[@Type='ROR']")
+
+        ror = None
+        if ror_node is not None:
+            ror = ror_node.text
 
         result = [
             node.text
@@ -182,9 +187,10 @@ class SpringerParser(IParser):
             ]
             if node is not None
         ]
-        country = country_node.text
+        country = country_node.text if country_node is not None else None
         result.append(country)
-        return ", ".join(result), org_name_node.text, country
+
+        return ", ".join(result), org_name_node.text, country, ror
 
     def _get_published_date(self, article):
         year = article.find(
@@ -218,8 +224,9 @@ class SpringerParser(IParser):
                 "value": clean_text(aff),
                 "organization": clean_text(org),
                 **({"country": country} if country else {}),
+                **({"ror": ror} if ror else {}),
             }
-            for aff, org, country, in affiliations
+            for aff, org, country, ror in affiliations
         ]
 
         return mapped_affiliations

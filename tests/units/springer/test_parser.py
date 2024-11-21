@@ -381,6 +381,7 @@ def test_article_with_cleaned_orcid(article_with_orcid):
                     "value": "An Giang University, Long Xuyen, 880000, Vietnam",
                     "organization": "An Giang University",
                     "country": "Vietnam",
+                    "ror": "https://ror.org/023pm6532",
                 },
                 {
                     "value": "Vietnam National University, Ho Chi Minh City, 700000, Vietnam",
@@ -399,6 +400,7 @@ def test_article_with_cleaned_orcid(article_with_orcid):
                     "value": "An Giang University, Long Xuyen, 880000, Vietnam",
                     "organization": "An Giang University",
                     "country": "Vietnam",
+                    "ror": "https://ror.org/023pm6532",
                 },
                 {
                     "value": "Vietnam National University, Ho Chi Minh City, 700000, Vietnam",
@@ -417,6 +419,7 @@ def test_article_with_cleaned_orcid(article_with_orcid):
                     "value": "Department of Physics, Can Tho University, 3/2 Street, Can Tho, Vietnam",
                     "organization": "Can Tho University",
                     "country": "Vietnam",
+                    "ror": "https://ror.org/0071qz696",
                 }
             ],
             "full_name": "Nguyen, T.",
@@ -430,6 +433,7 @@ def test_article_with_cleaned_orcid(article_with_orcid):
                     "value": "Subatomic Physics Research Group, Science and Technology Advanced Institute, Van Lang University, Ho Chi Minh City, Vietnam",
                     "organization": "Van Lang University",
                     "country": "Vietnam",
+                    "ror": "https://ror.org/02ryrf141",
                 }
             ],
             "full_name": "Hue, L.",
@@ -444,11 +448,13 @@ def test_article_with_cleaned_orcid(article_with_orcid):
                     "value": "Subatomic Physics Research Group, Science and Technology Advanced Institute, Van Lang University, Ho Chi Minh City, Vietnam",
                     "organization": "Van Lang University",
                     "country": "Vietnam",
+                    "ror": "https://ror.org/02ryrf141",
                 },
                 {
                     "value": "Faculty of Applied Technology, School of Technology, Van Lang University, Ho Chi Minh City, Vietnam",
                     "organization": "Van Lang University",
                     "country": "Vietnam",
+                    "ror": "https://ror.org/02ryrf141",
                 },
             ],
             "full_name": "Nha, N.",
