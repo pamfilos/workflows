@@ -4,6 +4,7 @@ from os import listdir
 from common.enhancer import Enhancer
 from pytest import fixture
 from springer.parser import SpringerParser
+from springer.springer_process_file import process_xml
 
 
 @fixture(scope="module")
@@ -17,14 +18,29 @@ def articles(datadir):
     articles = []
     for filename in sorted(listdir(datadir)):
         with open(datadir / filename) as file:
-            articles.append(ET.fromstring(file.read()))
-
+            xml = process_xml(file.read())
+            articles.append(ET.fromstring(xml))
     return articles
 
 
 @fixture()
 def parsed_articles(parser, articles):
     return [parser._publisher_specific_parsing(article) for article in articles]
+
+
+def test_weird_titles(parsed_articles):
+    parsed_titles = sorted([a.get("title") for a in parsed_articles])
+    expected_results = sorted([
+        " $$(g-2)_{e,\\mu }$$ anomalies and decays $$h\\rightarrow e_a e_b$$ , "
+            "$$Z\\rightarrow e_ae_b$$ , and $$e_b\\rightarrow e_a \\gamma $$ in a two "
+            "Higgs doublet model with inverse seesaw neutrinos",
+        " $$\\Lambda $$ polarization in very high energy heavy ion collisions as a probe of the quark–gluon plasma formation and properties",
+        "A strategy for a general search for new phenomena using data-derived signal regions and its application within the ATLAS experiment",
+        "Revisiting the mechanical properties of the nucleon",
+        "Symmetry breaking in quantum curves and super Chern-Simons matrix models"
+    ])
+
+    assert expected_results == parsed_titles
 
 
 def test_authors(parsed_articles):
