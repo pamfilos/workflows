@@ -138,6 +138,9 @@ class SpringerParser(IParser):
             "./Journal/Volume/Issue/Article/ArticleHeader/Abstract/Para"
         )
 
+        if paragraph is None:
+            return ""
+
         text_to_skip_flatten = [
             child_node.text
             for child in paragraph

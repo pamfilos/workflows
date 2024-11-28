@@ -340,6 +340,18 @@ def test_abstract(parsed_articles):
         "for 3.2 fb $$^{-1}$$ of proton–proton collision data at a centre-of-mass energy of 13 $$\\text {TeV}$$ collected with the ATLAS detector "
         "at the LHC in 2015, in which more than 700 event classes and more than $$10^5$$ regions have been analysed. No significant "
         "deviations are found and consequently no data-derived signal regions for a follow-up analysis have been defined.",
+        "The lepton flavor violating decays $$h\\rightarrow e_b^\\pm "
+        "e_a^\\mp $$ , $$Z\\rightarrow e_b^\\pm e_a^\\mp $$ , and "
+        "$$e_b\\rightarrow e_a \\gamma $$ will be discussed in the "
+        "framework of the Two Higgs doublet model with presence of new "
+        "inverse seesaw neutrinos and a singly charged Higgs boson that "
+        "accommodate both $$1\\sigma $$ experimental data of $$(g-2)$$ "
+        "anomalies of the muon and electron. Numerical results indicate "
+        "that there exist regions of the parameter space supporting all "
+        "experimental data of $$(g-2)_{e,\\mu }$$ as well as the "
+        "promising LFV signals corresponding to the future experimental "
+        "sensitivities.",
+        None
     )
     for abstract, article in zip(abstracts, parsed_articles):
         assert "abstract" in article
