@@ -78,6 +78,7 @@ class ElsevierParser(IParser):
             TextExtractor(
                 destination="copyright_holder",
                 source="item-info/copyright",
+                required=False,
             ),
             AttributeExtractor(
                 destination="copyright_year",
@@ -87,6 +88,7 @@ class ElsevierParser(IParser):
             TextExtractor(
                 destination="copyright_statement",
                 source="item-info/copyright",
+                required=False,
             ),
             CustomExtractor(
                 destination="journal_doctype",
