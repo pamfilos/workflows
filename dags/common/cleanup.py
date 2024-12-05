@@ -15,27 +15,26 @@ def convert_html_subscripts_to_latex(input):
     input = re.sub("<sup>(.*?)</sup>", r"$^{\1}$", input)
     return input
 
+
 def clean_inline_expressions(input):
     input = re.sub(
-        r"<InlineEquation.*?>(.*?)</InlineEquation>",
-        r"\1",
-        input,
-        flags=re.DOTALL
+        r"<InlineEquation.*?>(.*?)</InlineEquation>", r"\1", input, flags=re.DOTALL
     )
     input = re.sub(
         r"<EquationSource Format=\"TEX\"><!\[CDATA\[(.*?)\]\]></EquationSource>",
         r"\1",
-        input
+        input,
     )
     input = re.sub(
         r"<EquationSource Format=\"MATHML\">.*?</EquationSource>",
         "",
         input,
-        flags=re.DOTALL
+        flags=re.DOTALL,
     )
-    input = input.replace('\n', '').replace('\r', '')
+    input = input.replace("\n", "").replace("\r", "")
 
     return input
+
 
 def convert_html_italics_to_latex(input):
     input = re.sub(r"<italic\b[^>]*>(.*?)</italic>", r"$\\textit{\1}$", input)

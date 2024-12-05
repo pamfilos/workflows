@@ -30,15 +30,17 @@ def parsed_articles(parser, articles):
 
 def test_weird_titles(parsed_articles):
     parsed_titles = sorted([a.get("title") for a in parsed_articles])
-    expected_results = sorted([
-        " $$(g-2)_{e,\\mu }$$ anomalies and decays $$h\\rightarrow e_a e_b$$ , "
+    expected_results = sorted(
+        [
+            " $$(g-2)_{e,\\mu }$$ anomalies and decays $$h\\rightarrow e_a e_b$$ , "
             "$$Z\\rightarrow e_ae_b$$ , and $$e_b\\rightarrow e_a \\gamma $$ in a two "
             "Higgs doublet model with inverse seesaw neutrinos",
-        " $$\\Lambda $$ polarization in very high energy heavy ion collisions as a probe of the quark–gluon plasma formation and properties",
-        "A strategy for a general search for new phenomena using data-derived signal regions and its application within the ATLAS experiment",
-        "Revisiting the mechanical properties of the nucleon",
-        "Symmetry breaking in quantum curves and super Chern-Simons matrix models"
-    ])
+            " $$\\Lambda $$ polarization in very high energy heavy ion collisions as a probe of the quark–gluon plasma formation and properties",
+            "A strategy for a general search for new phenomena using data-derived signal regions and its application within the ATLAS experiment",
+            "Revisiting the mechanical properties of the nucleon",
+            "Symmetry breaking in quantum curves and super Chern-Simons matrix models",
+        ]
+    )
 
     assert expected_results == parsed_titles
 
@@ -351,7 +353,7 @@ def test_abstract(parsed_articles):
         "experimental data of $$(g-2)_{e,\\mu }$$ as well as the "
         "promising LFV signals corresponding to the future experimental "
         "sensitivities.",
-        None
+        None,
     )
     for abstract, article in zip(abstracts, parsed_articles):
         if abstract is None:
