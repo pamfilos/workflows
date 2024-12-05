@@ -2,6 +2,7 @@ import json
 
 import pytest
 from aps.parser import APSParser
+from aps.aps_process_file import enhance_aps
 
 
 @pytest.fixture(scope="module")
@@ -201,3 +202,7 @@ def test_aps_parsing(parsed_articles, expected, key):
     ) in zip(expected, parsed_articles):
         assert key in article
         assert article[key] == expected_value
+
+def test_aps_country_parsing(parsed_articles):
+    for article in parsed_articles:
+        enhance_aps(article)

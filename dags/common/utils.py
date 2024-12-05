@@ -320,7 +320,7 @@ def parse_country_from_value(affiliation_value):
 
         if len(mapped_countries) > 1 or len(mapped_countries) == 0:
             raise FoundMoreThanOneMatchOrNone(affiliation_value)
-        return mapped_countries[0].name
+        return mapped_countries[0].get("name", "")
     except (LookupError, FoundMoreThanOneMatchOrNone):
         return find_country_match_from_mapping(affiliation_value)
 
