@@ -354,8 +354,10 @@ def test_abstract(parsed_articles):
         None
     )
     for abstract, article in zip(abstracts, parsed_articles):
-        assert "abstract" in article
-        assert article["abstract"] == abstract
+        if abstract is None:
+            assert "abstract" not in article
+        else:
+            assert article["abstract"] == abstract
 
 
 @fixture
