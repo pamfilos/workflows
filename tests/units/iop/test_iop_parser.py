@@ -173,6 +173,19 @@ def test_date_published(shared_datadir, parser):
     assert parsed_article["journal_year"] == 2022
 
 
+def test_authors_no_surname(shared_datadir, parser):
+    content = (shared_datadir / "no_author_surname.xml").read_text()
+    article = ET.fromstring(content)
+    parsed_article = parser._publisher_specific_parsing(article)
+    parsed_article = parser._generic_parsing(parsed_article)
+
+    no_surname = []
+    for pa in parsed_article["authors"]:
+        if not pa.get("surname"):
+            no_surname.append(pa)
+    assert len(no_surname) > 0
+
+
 def test_authors(shared_datadir, parser):
     content = (shared_datadir / "all_fields.xml").read_text()
     article = ET.fromstring(content)

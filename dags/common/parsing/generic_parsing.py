@@ -65,10 +65,10 @@ def parse_author(author):
     if "given_names" in author and author["given_names"]:
         author["given_names"] = collapse_initials(author["given_names"])
         author["full_name"] = "{0}, {1}".format(
-            author["surname"], author["given_names"]
+            author.get("surname", ""), author["given_names"]
         )
     else:
-        author["full_name"] = author["surname"]
+        author["full_name"] = author.get("surname")
 
     return author
 
