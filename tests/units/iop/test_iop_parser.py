@@ -6,7 +6,7 @@ from common.enhancer import Enhancer
 from common.exceptions import UnknownLicense
 from common.parsing.xml_extractors import RequiredFieldNotFoundExtractionError
 from common.utils import parse_element_text, parse_to_ET_element
-from iop.iop_process_file import process_xml
+from iop.iop_process_file import convert_xml_to_et_tree
 from iop.parser import IOPParser
 from pytest import fixture, mark, param, raises
 
@@ -184,6 +184,23 @@ def test_authors_no_surname(shared_datadir, parser):
         if not pa.get("surname"):
             no_surname.append(pa)
     assert len(no_surname) > 0
+
+
+def test_convert_string():
+    fail_string = '<p>As mentioned before, we say that an operator is conserved if its expectation value is independent of time. This means that an equal-time operator <italic toggle="yes">A</italic> is conserved if and only if it satisfies <italic toggle="yes"/>d<italic toggle="yes">A</italic>=0. Thus, we have a tool allowing us to identify the conserved operators without resorting to Noether\'s theorem.</p>'
+
+    parsed_article = convert_xml_to_et_tree(fail_string)
+    assert parsed_article
+
+
+def test_authors_faulty_xml(shared_datadir, parser):
+    content = (shared_datadir / "faulty_xml.xml").read_text()
+
+    article = convert_xml_to_et_tree(content)
+    parsed_article = parser._publisher_specific_parsing(article)
+    parsed_article = parser._generic_parsing(parsed_article)
+
+    assert parsed_article
 
 
 def test_authors(shared_datadir, parser):
@@ -570,8 +587,7 @@ def test_title(shared_datadir, parser):
 
 def test_abstract(shared_datadir, parser):
     content = (shared_datadir / "abstract.xml").read_text()
-    content = process_xml(content)
-    article = ET.fromstring(content)
+    article = convert_xml_to_et_tree(content)
     parsed_article = parser._publisher_specific_parsing(article)
     assert (
         parsed_article["abstract"]
@@ -981,8 +997,8 @@ def test_cdata_without_regex():
 
 def test_title_starting_with_tags(shared_datadir, parser):
     content = (shared_datadir / "aca95c.xml").read_text()
-    content = process_xml(content)
-    article = ET.fromstring(content)
+    article = convert_xml_to_et_tree(content)
+
     parsed_article = parser._publisher_specific_parsing(article)
     assert (
         parsed_article["title"]
@@ -995,8 +1011,8 @@ def test_title_starting_with_tags(shared_datadir, parser):
 
 def test_title_starting_with_tags_after_enhancer(shared_datadir, parser):
     content = (shared_datadir / "aca95c.xml").read_text()
-    content = process_xml(content)
-    article = ET.fromstring(content)
+    article = convert_xml_to_et_tree(content)
+
     parsed_article = parser.parse(article)
     enhanced_file = Enhancer()("IOP", parsed_article)
     assert (

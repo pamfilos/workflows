@@ -21,11 +21,24 @@ from structlog import get_logger
 logger = get_logger()
 
 
-def process_xml(input):
+def process_xml(input, italics=True):
     input = convert_html_subscripts_to_latex(input)
-    input = convert_html_italics_to_latex(input)
+    if italics:
+        input = convert_html_italics_to_latex(input)
     input = replace_cdata_format(input)
     return input
+
+
+def convert_xml_to_et_tree(input):
+    try:
+        xml = process_xml(input)
+        xml = ET.fromstring(xml)
+
+    except ET.ParseError:
+        xml = process_xml(input, italics=False)
+        xml = ET.fromstring(xml)
+
+    return xml
 
 
 def iop_parse_file(**kwargs):
@@ -36,8 +49,7 @@ def iop_parse_file(**kwargs):
     xml_bytes = base64.b64decode(encoded_xml)
     if isinstance(xml_bytes, bytes):
         xml_bytes = xml_bytes.decode("utf-8")
-    xml_bytes = process_xml(xml_bytes)
-    xml = ET.fromstring(xml_bytes)
+    xml = convert_xml_to_et_tree(input)
 
     parser = IOPParser(file_path=file_name)
     parsed = parser.parse(xml)
