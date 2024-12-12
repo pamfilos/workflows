@@ -49,7 +49,7 @@ def iop_parse_file(**kwargs):
     xml_bytes = base64.b64decode(encoded_xml)
     if isinstance(xml_bytes, bytes):
         xml_bytes = xml_bytes.decode("utf-8")
-    xml = convert_xml_to_et_tree(input)
+    xml = convert_xml_to_et_tree(xml_bytes)
 
     parser = IOPParser(file_path=file_name)
     parsed = parser.parse(xml)
