@@ -34,7 +34,7 @@ def convert_xml_to_et_tree(input):
         xml = process_xml(input)
         xml = ET.fromstring(xml)
 
-    except ET.ParseError:
+    except (ET.ParseError, TypeError):
         xml = process_xml(input, italics=False)
         xml = ET.fromstring(xml)
 
