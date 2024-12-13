@@ -43,7 +43,7 @@ def springer_parse_file(**kwargs):
         if isinstance(xml_bytes, bytes):
             xml_bytes = xml_bytes.decode("utf-8")
         xml_bytes = process_xml(xml_bytes)
-        xml = ET.fromstring(xml_bytes.decode("utf-8"))
+        xml = ET.fromstring(xml_bytes)
 
         parser = SpringerParser(file_name)
         parsed = parser.parse(xml)
