@@ -59,12 +59,23 @@ class ElsevierParser(IParser):
             ),
             TextExtractor(
                 destination="abstract",
-                source="head/abstract/abstract-sec/simple-para",
+                source=[
+                    "head/abstract/abstract-sec/simple-para",
+                    "simple-head/abstract/abstract-sec/simple-para",
+                ],
                 all_content_between_tags=True,
                 required=False,
             ),
             TextExtractor(
-                destination="title", source="head/title", all_content_between_tags=True
+                destination="title",
+                source=["head/title", "simple-head/title"],
+                all_content_between_tags=True,
+            ),
+            TextExtractor(
+                destination="subtitle",
+                source=["head/subtitle", "simple-head/subtitle"],
+                all_content_between_tags=True,
+                required=False,
             ),
             CustomExtractor(
                 destination="authors",
@@ -113,9 +124,15 @@ class ElsevierParser(IParser):
         """Get the authors."""
         authors = []
         author_group = article.find("head/author-group")
+        if author_group is None:
+            author_group = article.find("simple-head/author-group")
         author_collab_group = article.find(
             "head/author-group/collaboration/author-group"
         )
+        if author_collab_group is None:
+            author_collab_group = article.find(
+                "simple-head/author-group/collaboration/author-group"
+            )
         for author_group_ in [author_group, author_collab_group]:
             if not author_group_:
                 continue

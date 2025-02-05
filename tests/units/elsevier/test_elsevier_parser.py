@@ -17,6 +17,7 @@ def articles(shared_datadir):
         "main.xml",
         "main_rjjlr.xml",
         "j.physletb.2023.138109.xml",
+        "main_simple_head.xml",
     ]
     for filename in file_names:
         with open(shared_datadir / filename) as file:
@@ -46,6 +47,7 @@ def enhanced_articles(parser, parsed_articles):
                 ["10.1016/j.physletb.2023.138173"],
                 ["10.1016/j.physletb.2022.137649"],
                 ["10.1016/j.physletb.2023.138109"],
+                ["10.1016/j.physletb.2025.139258"],
             ],
             "dois",
             id="test_dois",
@@ -66,6 +68,7 @@ def enhanced_articles(parser, parsed_articles):
                 "Quantum gravity, the cosmological constant, and parity transformation",
                 "Study of charged particle production at high  <italic>p</italic> <inf>T</inf> using event topology in pp, p&#8211;Pb and Pb&#8211;Pb collisions at  <math altimg='si1.svg'><msqrt><mrow><msub><mrow><mi>s</mi></mrow><mrow><mi mathvariant='normal'>NN</mi></mrow></msub></mrow></msqrt><mo linebreak='goodbreak' linebreakstyle='after'>=</mo><mn>5.02</mn></math> <hsp sp='0.20' />TeV",
                 "Electroweak vacuum decay in metric-affine gravity",
+                "Corrigendum to “A potential approach to the  <italic>X</italic>(3872) thermal behavior&#8221; [Phys. Lett. B 854 (2024) 138760]",
             ],
             "title",
             id="test_tilte",
@@ -12441,6 +12444,58 @@ def enhanced_articles(parser, parsed_articles):
                         "email": "hardi.veermae@cern.ch",
                     },
                 ],
+                [
+                    {
+                        "surname": "Armesto",
+                        "given_names": "Néstor",
+                        "affiliations": [
+                            {
+                                "value": "Instituto Galego de Física de Altas Enerxías IGFAE, Universidade de Santiago de Compostela, Santiago de Compostela, 15782, Galicia, Spain",
+                                "organization": "Instituto Galego de Física de Altas Enerxías IGFAE",
+                                "country": "Spain",
+                            }
+                        ],
+                        "email": "nestor.armesto@usc.es",
+                    },
+                    {
+                        "surname": "Escobedo",
+                        "given_names": "Miguel Ángel",
+                        "affiliations": [
+                            {
+                                "value": "Departament de Física Quàntica i Astrofísica and Institut de Ciències del Cosmos, Universitat de Barcelona, Martí i Franquès 1, Barcelona, 08028, Catalonia, Spain",
+                                "organization": "Departament de Física Quàntica i Astrofísica",
+                                "country": "Spain",
+                            }
+                        ],
+                        "email": "miguel.a.escobedo@fqa.ub.edu",
+                        "orcid": "0000-0002-0123-3223",
+                    },
+                    {
+                        "surname": "Ferreiro",
+                        "given_names": "Elena G.",
+                        "affiliations": [
+                            {
+                                "value": "Instituto Galego de Física de Altas Enerxías IGFAE, Universidade de Santiago de Compostela, Santiago de Compostela, 15782, Galicia, Spain",
+                                "organization": "Instituto Galego de Física de Altas Enerxías IGFAE",
+                                "country": "Spain",
+                            }
+                        ],
+                        "email": "elena.gonzalez.ferreiro@usc.es",
+                    },
+                    {
+                        "surname": "López-Pardo",
+                        "given_names": "Víctor",
+                        "affiliations": [
+                            {
+                                "value": "Instituto Galego de Física de Altas Enerxías IGFAE, Universidade de Santiago de Compostela, Santiago de Compostela, 15782, Galicia, Spain",
+                                "organization": "Instituto Galego de Física de Altas Enerxías IGFAE",
+                                "country": "Spain",
+                            }
+                        ],
+                        "email": "victorlopez.pardo@usc.es",
+                        "orcid": "0009-0001-8965-382X",
+                    },
+                ],
             ],
             "authors",
             id="test_authors",
@@ -12451,18 +12506,20 @@ def enhanced_articles(parser, parsed_articles):
                 "The Author(s)",
                 "The Author(s)",
                 "The Author(s)",
+                "The Author(s)",
             ],
             "copyright_holder",
             id="test_copyright_holder",
         ),
         param(
-            ["2023", "2023", "2023", "2023"],
+            ["2023", "2023", "2023", "2023", "2025"],
             "copyright_year",
             id="test_copyright_year",
         ),
         param(
             [
                 "European Center of Nuclear Research, ALICE experiment",
+                "The Author(s)",
                 "The Author(s)",
                 "The Author(s)",
                 "The Author(s)",
@@ -12476,6 +12533,7 @@ def enhanced_articles(parser, parsed_articles):
                 "article",
                 "article",
                 "article",
+                "erratum",
             ],
             "journal_doctype",
             id="test_journal_doctype",

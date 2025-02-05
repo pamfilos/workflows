@@ -69,7 +69,14 @@ class TextExtractor(IExtractor):
                 article.find(self.source, self.prefixes).text
             )
             return node_with_prefix
-        node = article.find(self.source)
+        if isinstance(self.source, str) is False:
+            for src in self.source:
+                node = article.find(src)
+                if node is not None:
+                    break
+        else:
+            node = article.find(self.source)
+
         if self.all_content_between_tags:
             value = self._get_content_as_text_value(node)
         else:
